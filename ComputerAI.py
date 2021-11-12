@@ -1,6 +1,7 @@
 import random
 from BaseAI import BaseAI
 import numpy as np
+from Grid import Grid
 
 class ComputerAI(BaseAI):
 
@@ -16,9 +17,7 @@ class ComputerAI(BaseAI):
 
     def getMove(self, grid):
         """ Returns a random, valid move """
-        # find all available cells for bombing
         
-
         # find all available moves 
         available_moves = grid.get_neighbors(self.pos, only_available = True)
 
@@ -27,14 +26,16 @@ class ComputerAI(BaseAI):
         
         self.setPosition(new_pos)
 
-        # make random trap
-        available_cells = list(set(grid.getAvailableCells()) - set(new_pos))
+        return new_pos
 
+    def getTrap(self, grid : Grid):
+        
+        # find all available cells in the grid
+        available_cells = grid.getAvailableCells()
+
+        # find all available cells
         trap = random.choice(available_cells) if available_cells else None
 
-        return new_pos, trap
-        
-    def getTrap(self, grid):
-        pass
+        return trap
 
     

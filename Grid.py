@@ -1,6 +1,13 @@
 from copy import deepcopy
 import numpy as np
 
+"""
+Authors : Tom Cohen, 
+COMS 4701 - Artificial Intelligence
+Columbia University
+Prof. Ansaf Salleb-Aoissi
+"""
+
 class Grid():
     
     def __init__(self, N = 7) -> None:
@@ -40,6 +47,7 @@ class Grid():
         pos : position (x,y) whose neighbors are desired
 
         only_available (bool) : if True, the function will return only available neighboring cells. default = False
+        
         """
         x,y     = pos
         range_x = range(max(x-1, 0), min(x+2, self.dim))
@@ -51,13 +59,25 @@ class Grid():
         
         return neighbors
 
+
     def move(self, move, player):
-        new_pos, bomb = move
+        """
+        Description 
+        ----------
+        """
         old_pos = np.where(self.map == player)
         self.map[old_pos] = 0
-        self.map[new_pos] = player
-        self.map[bomb] = -1
+        self.map[move] = player
+
         return
+
+    def trap(self, pos):
+        self.map[pos] = -1
+
+        return
+
+
+    
 
     def print_grid(self):
         print(self.map)

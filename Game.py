@@ -6,18 +6,20 @@ from ComputerAI import ComputerAI
 PLAYER_TURN, COMPUTER_TURN = 0,1
 
 class Game():
-    def __init__(self, playerAI, computerAI = None, N = 7):
+    def __init__(self, playerAI = None, computerAI = None, N = 7):
         '''
         Parameters
         -----------
-        playerAI   - Human player AI, of type PlayerAI.
-        computerAI - Human or Computer Opponent
-        N  - dimension of grid; has to be an odd number.
+        playerAI   - Human player AI, of type PlayerAI. default = None 
+
+        computerAI - Human or Computer Opponent. default = None
+        
+        N  - dimension of grid.
 
         '''
-        self.grid      = Grid(N)
-        self.playerAI   = playerAI or ComputerAI() # That's you!
-        self.computerAI = computerAI or ComputerAI() # That's your opponent
+        self.grid       = Grid(N)
+        self.playerAI   = playerAI or ComputerAI() 
+        self.computerAI = computerAI or ComputerAI() 
         self.dim        = N
         self.over       = False
 
@@ -44,15 +46,7 @@ class Game():
             return 2
         
         else: return 0
-    '''
-    def get_neighbors(self, player):
-        indices = np.where(self.board == player)
-        x,y = list(zip(indices[0], indices[1]))[0]
-        range_x = range(max(x-1, 0), min(x+2, self.dim))
-        range_y = range(max(y-1, 0), min(y+2, self.dim))
-        neighbors = {(a,b) for a in range_x for b in range_y} - {(x,y)}
-        return neighbors
-    '''
+
     def is_valid(self, grid, move):
         pos, bomb = move
         if (grid.getCellValue(pos) or grid.getCellValue(bomb)):
@@ -71,7 +65,7 @@ class Game():
             
             if turn == 0:
                 
-                print("Player's Turn!")
+                print("Player's Turn: ")
 
                 # find best move; should return two coordinates - new position and bombed tile.
                 move = self.playerAI.getMove(grid_copy)
@@ -79,28 +73,43 @@ class Game():
                 # if move is valid, perform it
                 if self.is_valid(self.grid, move) and not self.is_over():
                     self.grid.move(move, turn + 1)
-                
+                    print(f"Moving to {move}")
                 else:
                     self.over = True
                     print("invalid Player AI move!")
                 
-                # trap = self.playerAI.getTrap()
+                trap = self.playerAI.getTrap()
 
-                # if self.is_valid(self.grid, trap) and not self.is_over():
-                    # self.grid.trap(trap, turn + 1)
-                # else: 
-                #   self.over = True
-                #   print("Invalid trap!")
+                if self.is_valid(self.grid, trap) and not self.is_over():
+                    self.grid.trap(trap, turn + 1)
+                    print(f"Placing a trap in {trap}")
+
+                else: 
+                    self.over = True
+                    print("Invalid trap!")
 
             else:
-                print("Opponent's Turn")
-                move = pos, bomb = self.computerAI.getMove(grid_copy)
+                
+                print("Opponent's Turn : ")
+                
+                # make move
+                move = self.computerAI.getMove(grid_copy)
 
+                # check if move is valid; perform if it is.
                 if self.is_valid(self.grid, move) and not self.is_over():
                     self.grid.move(move, turn + 1)
+                    print(f"Moving to {move}")
+
                 else:
                     self.over = True
                     print("invalid Computer AI Move")
+
+                trap = self.computerAI.getTrap(grid_copy)
+
+                if self.is_valid(self.grid, trap) and not self.is_over():
+                    self.grid.trap(trap)
+                    print(f"Placing a trap in {trap}")
+
             turn = 1 - turn
             self.grid.print_grid()
             i += 1
