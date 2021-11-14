@@ -31,6 +31,12 @@ class Grid():
 
 
     def clone(self):
+        """
+        Description
+        -----------
+        Function returns a full copy of current grid
+
+        """
         grid_copy = Grid(self.dim)
         grid_copy.map = deepcopy(self.map)
         return grid_copy
@@ -49,11 +55,14 @@ class Grid():
         only_available (bool) : if True, the function will return only available neighboring cells. default = False
         
         """
-        x,y     = pos
-        range_x = range(max(x-1, 0), min(x+2, self.dim))
-        range_y = range(max(y-1, 0), min(y+2, self.dim))
-        neighbors = list({(a,b) for a in range_x for b in range_y} - {(x,y)})
+        x,y = pos
         
+        valid_range = lambda t: range(max(t-1, 0), min(t+2, self.dim))
+
+        # find all neighbors
+        neighbors = list({(a,b) for a in valid_range(x) for b in valid_range(y)} - {(x,y)})
+        
+        # select only neighboring cells which aren't occupying by a player or trap
         if only_available:
             return [neighbor for neighbor in neighbors if self.map[neighbor] == 0]
         
@@ -63,7 +72,16 @@ class Grid():
     def move(self, move, player):
         """
         Description 
-        ----------
+        -----------
+        Apply a move by specified player to board
+
+        Parameters
+        -----------
+
+        move: coordinates of new position to which the player decides to move
+
+        player: the identifier of the player (1 for human, 2 for computer)
+
         """
         old_pos = np.where(self.map == player)
         self.map[old_pos] = 0
@@ -76,8 +94,6 @@ class Grid():
 
         return
 
-
-    
 
     def print_grid(self):
         print(self.map)
