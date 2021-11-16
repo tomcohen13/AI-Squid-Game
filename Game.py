@@ -47,16 +47,21 @@ class Game():
         else: return 0
 
     def is_valid(self, grid, move):
-        pos, bomb = move
-        if (grid.getCellValue(pos) or grid.getCellValue(bomb)):
+        """
+        Validate move by checking if the cell has a value of anything but 0.
+        """
+        if grid.getCellValue(move):
             return False
+
         return True
 
     def play(self):
+        
         self.initialize_game()
+        
         turn = PLAYER_TURN
-        i = 0
-        while not self.over and i < 6:
+        
+        while not self.over:
 
             grid_copy = self.grid.clone()
 
@@ -77,10 +82,10 @@ class Game():
                     self.over = True
                     print("invalid Player AI move!")
                 
-                trap = self.playerAI.getTrap()
+                trap = self.playerAI.getTrap(grid_copy)
 
                 if self.is_valid(self.grid, trap) and not self.is_over():
-                    self.grid.trap(trap, turn + 1)
+                    self.grid.trap(trap)
                     print(f"Placing a trap in {trap}")
 
                 else: 
@@ -111,7 +116,6 @@ class Game():
 
             turn = 1 - turn
             self.grid.print_grid()
-            i += 1
 
         return self.is_over()
 
