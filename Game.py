@@ -1,4 +1,3 @@
-
 import numpy as np
 from Grid import Grid
 from ComputerAI import ComputerAI
@@ -117,9 +116,9 @@ class Game():
         return self.is_over()
 
 def main():
-    playerAI = ComputerAI()
+    playerAI = ComputerAI() # change this to PlayerAI() to test your player!
     computerAI = ComputerAI()
-    game = Game(playerAI=playerAI, computerAI=computerAI, N = 7)
+    game = Game(playerAI = playerAI, computerAI = computerAI, N = 7)
     result = game.play()
     if result == 1: 
         print("Player 1 wins!")
