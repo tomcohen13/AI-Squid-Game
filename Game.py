@@ -82,7 +82,7 @@ class Game():
                     self.over = True
                     print("invalid Player AI move!")
                 
-                trap = self.playerAI.getTrap(grid_copy)
+                trap = self.playerAI.getTrap(self.grid.clone())
 
                 if self.is_valid(self.grid, trap) and not self.is_over():
                     self.grid.trap(trap)
