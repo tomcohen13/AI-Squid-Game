@@ -42,7 +42,7 @@ no traps             |  with traps
 
 ### 1.3 Throwing a Trap
 
-Unlike movement, a trap can be thrown to *anywhere in the board*. 
+Unlike movement, a trap can be thrown to *anywhere in the board*, with the exception of the opponents location - again, we want them alive! - and the player's location. Note that throwing a trap on top of another trap is possible but useless.
 
 **However,** sadly, we are not on the olympic throwing team, and our aiming abilities deteriorate with distance, such that there is an increasing chance the trap will land on any of its neighboring cells. In fact, the chance *p* that it will land precisely on the cell we want is given as: 
 
@@ -96,10 +96,15 @@ Minimax             |  ExpectiMinimax
 <img width="347" alt="minimax" src="https://user-images.githubusercontent.com/55168908/142590520-a3e29401-726a-4585-9579-c1dd47aee108.png">| <img width="431" alt="expecti" src="https://user-images.githubusercontent.com/55168908/142590403-aec560c3-1ede-4b49-81f4-57942bbbd990.png">
 
 As you can see, you are now trying to maximize the opponents moves, given the *chance* of them happening. For example, if we are to throw a trap and want to maximize our chance of winning, our tree will have a chance node with value *p* as well as *n* nodes with values *(1-p)/n* (see equations in 1.3: Throwing a Trap).
-The rest is the same!
+The rest is the same! 
 
+Note that the player is now maximizing their *Expected Utility* in every move (if that sounds not-necessarily-optimal to you, you aren't wrong!).
 
-## Hmm that's a lot. Where do we start?
+### Heuristics!
+
+Since the Search Space here is HUGE! 
+
+### Hmm that's a lot. Where Do We Start?
 
 Fear not! Here's a very good recipe:
 
@@ -107,4 +112,10 @@ Fear not! Here's a very good recipe:
 2. Add Alpha-beta pruning. Observe improvements.
 3. Extend minimax to Expectiminimax by introducing the Chance node
 
+## Grading
+
+The competition is designed so that **all groups will be able to get a good grade regardless of their placement in the competition**. We will test your code against players of three difficulty levels: Easy, Medium, and Hard (still very doable as long as you implement everything). 
+* Grading & Logistics
+* Q&A
+* Resources
 
