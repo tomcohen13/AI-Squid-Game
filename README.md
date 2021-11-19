@@ -17,7 +17,7 @@ Professor : Ansaf Salleb-Aouissi
 * Resources
 
 
-## Description
+## 1. Description
 
 In this project, we will use Adverserial AI to defeat the opponent at our newly-invented game, Trap!
 
@@ -25,22 +25,22 @@ Imagine the following scenario: you are a rebelling contestant and your opponent
 In order to find out who's standing behind Squid Game, you want to capture them *alive*! Likewise, they are interested in capturing you alive to find who's behind the rebellion. When you both realize your intentions are the same, you agree to make it into a mind game - and let the smarter player win. 
 Your task in this game is thus twofold: Trap the opponent, and don't get trapped!
 
-### Organization
+### 1.1 Organization
 The game is organized as a two-player game on a 7x7 board space. Every turn, a player first **moves** and then **throws a trap** somewhere on the board. 
 
-![organization](https://user-images.githubusercontent.com/55168908/142587004-8a5af0d4-6a1d-4bad-b5a3-cd21f51cab7b.png | width = 100)
+<img src="https://user-images.githubusercontent.com/55168908/142587004-8a5af0d4-6a1d-4bad-b5a3-cd21f51cab7b.png" height="400"/>
 
 
-### Movement: 
+### 1.2 Movement
 
-Each turn, a player can move one step in any possible direction, diagonals included (e.g., like King in chess), *so long as there is no trap placed in that cell*
+Each turn, a player can move one step in any possible direction, diagonals included (e.g., like King in chess), *so long as there is no trap placed in that cell and that it is within the borders of the grid*
 
 no traps             |  with traps
 :-------------------------:|:-------------------------:
 ![image](https://user-images.githubusercontent.com/55168908/142576384-3e3c6bec-9915-43ee-9b14-28c75e82ebc4.png)  |  ![image](https://user-images.githubusercontent.com/55168908/142577318-33321ee1-2afe-432f-ad75-967f89442ae7.png)
 
 
-### Throwing a Trap:
+### 1.3 Throwing a Trap
 
 Unlike movement, a trap can be thrown to *anywhere in the board*. 
 
@@ -65,9 +65,7 @@ Target             |  Probabilities of trap placement
 ![trap1](https://user-images.githubusercontent.com/55168908/142584513-d4e70925-a2ad-436d-895c-e4cac90fbbcf.png)| ![trap2](https://user-images.githubusercontent.com/55168908/142584586-d40bca87-99e7-4b12-b761-2f3eb83190d5.png)
 
 
-
-
-### Game Over?
+### 1.4 Game Over?
 
 To win, you must "Trap" you opponent so that they could not possibly move in any direction, while you still can! Examples:
 
@@ -81,22 +79,32 @@ In example 1: the player can still move down or right, whereas the opponent has 
 In example 2: the player cannot move but the opponent still has a diagnoal move. 
 
 
-## What to Code
+## 2. What to Code
 
 Two thoughtful actions are performed at each turn: One to maximize the chance of survival (moving), and the other to maximize the chance of winning the game (Trapping). So accordingly, we have two different Adversarial Search problems to compute at each turn!
 
-### The Search Algorithm
-For **each** of the search problems, you will have to implement an **Expecti-Minimax with Alpha-Beta Pruning** (if necessary, revisit our lecture on Adversarial Search).
+### 2.1 The Search Algorithm
+For **each** of the search problems, you will have to implement the ExpectiMinimax algorithm with Alpha-Beta Pruning!
 
-### Expecti-What-Now?
-Expectiminimax (indeed a mouthful) is a simple extension of the minimax algorithm! So think about how to implement minimax first. As we saw in the simple case of tic-tac-toe, it is useful to employ the minimax algorithm assuming the opponent is a perfect "minimizing" agent. In practice, an algorithm with the perfect opponent assumption deviates from reality when playing a sub-par opponent making silly moves, but still leads to the desired outcome of never losing. If the
-deviation goes the other way, however, (a "maximax" opponent in which the opponent wants us to win), winning is obviously not guaranteed.
-
+### 2.2 Expecti--What Now?
+Expectiminimax (indeed a mouthful) is a simple extension of the famous Minimax algorithm that we covered in class (Adversarial Search lecture)! 
+The only difference is that in the expectiminimax, we introduce an intermediate **Chance Node** that accounts for chance and uncertainty. As we have previously established, throwing the trap is not always accurate, so we have to take into account potential consequences as we navigate the game. The modification is demonstrated in the comparison below:
 
 
 Minimax             |  ExpectiMinimax
 :-------------------------:|:-------------------------:
-![image](https://user-images.githubusercontent.com/55168908/142586538-292bed18-7ec9-437a-82fd-175d05ec8414.png)| ![image](https://user-images.githubusercontent.com/55168908/142586645-553af6e3-e420-4220-a241-56df3691c3b1.png)
+<img width="347" alt="minimax" src="https://user-images.githubusercontent.com/55168908/142590520-a3e29401-726a-4585-9579-c1dd47aee108.png">| <img width="431" alt="expecti" src="https://user-images.githubusercontent.com/55168908/142590403-aec560c3-1ede-4b49-81f4-57942bbbd990.png">
 
+As you can see, you are now trying to maximize the opponents moves, given the *chance* of them happening. For example, if we are to throw a trap and want to maximize our chance of winning, our tree will have a chance node with value *p* as well as *n* nodes with values *(1-p)/n* (see equations in 1.3: Throwing a Trap).
+The rest is the same!
+
+
+## Hmm that's a lot. Where do we start?
+
+Fear not! Here's a very good recipe:
+
+1. Start with implementing a simple minimax. Observe improvements.
+2. Add Alpha-beta pruning. Observe improvements.
+3. Extend minimax to Expectiminimax by introducing the Chance node
 
 
