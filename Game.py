@@ -1,11 +1,12 @@
 import numpy as np
 from Grid import Grid
 from ComputerAI import ComputerAI
+from Displayer import Displayer
 
 PLAYER_TURN, COMPUTER_TURN = 0,1
 
 class Game():
-    def __init__(self, playerAI = None, computerAI = None, N = 7):
+    def __init__(self, playerAI = None, computerAI = None, N = 7, displayer = None):
         '''
         Parameters
         -----------
@@ -21,6 +22,7 @@ class Game():
         self.computerAI = computerAI or ComputerAI() 
         self.dim        = N
         self.over       = False
+        self.displayer = displayer
 
     def initialize_game(self):
 
@@ -58,7 +60,8 @@ class Game():
     def play(self):
         
         self.initialize_game()
-        
+        self.displayer.display(self.grid)
+
         turn = PLAYER_TURN
         
         while not self.over:
@@ -115,14 +118,18 @@ class Game():
                     print(f"Placing a trap in {trap}")
 
             turn = 1 - turn
-            self.grid.print_grid()
+            self.displayer.display(self.grid)
+            # self.grid.print_grid()
 
         return self.is_over()
 
 def main():
     playerAI = ComputerAI() # change this to PlayerAI() to test your player!
     computerAI = ComputerAI()
-    game = Game(playerAI = playerAI, computerAI = computerAI, N = 7)
+    displayer = Displayer()
+    game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
+    
+
     result = game.play()
     if result == 1: 
         print("Player 1 wins!")
