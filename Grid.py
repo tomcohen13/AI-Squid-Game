@@ -16,7 +16,11 @@ class Grid():
     
 
     def getAvailableCells(self):
+        """
+        Returns all available cells in the grid in the form of [(x_0,y_0), ..., (x_n, y_n)]
+        """
         indices = np.where(self.map == 0)
+        
         available = [(x,y) for x,y in list(zip(indices[0], indices[1]))]
         
         return available
@@ -32,10 +36,7 @@ class Grid():
 
     def clone(self):
         """
-        Description
-        -----------
-        Function returns a full copy of current grid
-
+        Makes a full copy of current grid
         """
         grid_copy = Grid(self.dim)
         grid_copy.map = deepcopy(self.map)
@@ -43,6 +44,7 @@ class Grid():
 
 
     def get_neighbors(self, pos, only_available = False):
+
         """
         Description
         -----------
@@ -52,7 +54,8 @@ class Grid():
         -----------
         pos : position (x,y) whose neighbors are desired
 
-        only_available (bool) : if True, the function will return only available neighboring cells. default = False
+        only_available (bool) : if True, the function will return only available neighboring cells. 
+                                default = False
         
         """
         x,y = pos

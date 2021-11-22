@@ -50,7 +50,7 @@ class Game():
         """
         Validate move by checking if the cell has a value of anything but 0.
         """
-        if grid.getCellValue(move):
+        if grid.getCellValue(move) != 0:
             return False
 
         return True
@@ -123,11 +123,12 @@ def main():
     playerAI = ComputerAI() # change this to PlayerAI() to test your player!
     computerAI = ComputerAI()
     game = Game(playerAI = playerAI, computerAI = computerAI, N = 7)
-    result = game.play()
-    if result == 1: 
-        print("Player 1 wins!")
-    elif result == 2:
-        print("Player 1 loses!")
+    game.grid.get_neighbors()
+    # result = game.play()
+    # if result == 1: 
+        # print("Player 1 wins!")
+    # elif result == 2:
+        # print("Player 1 loses!")
 
 if __name__ == "__main__":
     main()
