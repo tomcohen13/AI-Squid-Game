@@ -10,7 +10,7 @@ Professor : Ansaf Salleb-Aouissi
 
 ## Preface and Learning Objectives
 
-In this (super exciting) project, we will use Adverserial AI to defeat a strategic opponent at a mind game. 
+In this (super exciting) project, we will use Adversarial AI to defeat a strategic opponent at a mind game. 
 
 ### Learning Objective
 
