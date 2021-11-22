@@ -4,7 +4,7 @@ The final coding challenge for COMS W4701 - Artificial Intelligence, Columbia Un
 
 Written by: Tom Cohen
 
-Code: Tom Cohen, Adam Lin, Gustave Ducrest
+Code: Tom Cohen, Adam Lin, Gustave Ducrest, Rohith 
 
 Professor : Ansaf Salleb-Aouissi
 
