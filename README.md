@@ -8,16 +8,6 @@ Code: Tom Cohen, Adam Lin, Gustave Ducrest
 
 Professor : Ansaf Salleb-Aouissi
 
-## Outline (for internal use)
-
-* Description and hyping of Game (Rules, ..)
-* Coding (Minimax Algorithm, Alpha-Beta Pruning)
-* Restrictions
-* Logistics
-* Grading
-* Q&A
-* Resources
-
 ## Preface and Learning Objectives
 
 In this (super exciting) project, we will use Adverserial AI to defeat a strategic opponent at a mind game. 
