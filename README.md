@@ -108,7 +108,7 @@ The rest is the same!
 
 Note that the player is now maximizing their *Expected Utility* in every move (if that sounds not-necessarily-optimal to you, you aren't wrong!).
 
-### Heuristics!
+### 2.3 Heuristics!
 
 Since the Search Space here is HUGE(!), you will need to come up with useful heuristics for both *restricting the search space* as well as *evaluating the utility of a move.*
 
@@ -120,7 +120,7 @@ A few basic ones you can start with:
 
 Of course, you may choose to combine multiple heuristics and come up with your own heuristics!
 
-### Hmm that's a lot. Where Do We Start?
+### 2.4 Hmm that's a lot. Where Do We Start?
 
 Fear not! Here's a very good recipe:
 
@@ -133,17 +133,17 @@ Fear not! Here's a very good recipe:
 7. Code advanced heuristics
 8. DONE.
 
-## Grading
+## 3. Grading
 
 The competition is designed so that **all groups will be able to get a good grade regardless of their placement in the competition**. We will test your code against players of three difficulty levels: Easy, Medium, and Hard (still very doable as long as you implement everything). Those will account for at least 85% of your grade on the project. After evaluating all teams against our players, we will create a tournament where you will compete against other groups and will be rewarded more points based on the number of groups you defeat!
 
-## Submission 
+## 4. Submission 
 
 Please submit the entire folder with all the files. The name of the folder must be the UNIs of all groups members, concatenated with underscores. For example, tc1234_gd5678. Additionally, you *MUST* submit a text file, named exactly as the folder (e.g., tc1234_gd5678.txt) describing each member's contribution to the project. We may take that into account when computing individual grades in the case that one member contributed significantly more than the other(s)!
 
 **Note that we will only test the PlayerAI.py file so make sure all necessary functions are there!**
 
-## * Q&A
+## 5. Q&A
 
 #### What are we allowed to use?** 
 You are definitely allowed to import commont libraries (e.g., numpy, itertools, etc.) as well as use/modify functions provided as part of the source code (e.g., the probabilistic trap throw). HOWEVER, you will need to implement all the Search Algorithms and Heuristics yourselves! 
