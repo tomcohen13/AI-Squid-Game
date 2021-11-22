@@ -84,6 +84,9 @@ In example 1: the player can still move down or right, whereas the opponent has 
 
 In example 2: the player cannot move but the opponent still has a diagnoal move. 
 
+### 1.5 More clarifications (Will get updated as we go):
+- The two players cannot stand on the same cell.
+- You can throw a trap on a cell that is either free or has a trap on it (which is useless). You cannot throw a trap on a cell where there's a player. 
 
 ## 2. What to Code
 
