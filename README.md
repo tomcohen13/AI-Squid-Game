@@ -16,19 +16,35 @@ Professor : Ansaf Salleb-Aouissi
 * Q&A
 * Resources
 
+## Preface and Learning Objectives
 
-## 1. Description
+In this (super exciting) project, we will use Adverserial AI to defeat a strategic opponent at a mind game. 
 
-In this project, we will use Adverserial AI to defeat the opponent at our newly-invented game, Trap!
+### Learning Objective
 
-Imagine the following scenario: you are a rebelling contestant and your opponent is one of the captors, whose identity is unknown! 
-In order to find out who's standing behind Squid Game, you want to capture them *alive*! Likewise, they are interested in capturing you alive to find who's behind the rebellion. When you both realize your intentions are the same, you agree to make it into a mind game - and let the smarter player win. 
-Your task in this game is thus twofold: Trap the opponent, and don't get trapped!
+By the end of this project you will have learned:
+1. **Minimax, ExpectiMinimax, and Alpha-Beta Pruning**
+2. Inventive **Heuristics**!
+3. Adversarial Seach under **Time Constraints**
+4. How to **collaborate effectively**
+5. How to test your Player AI
+
+## 1. Game Description
+
+It is you against another contestant, and only one will survive! 
+
+The players are placed on a gridded space and supplied with small traps which they can throw anywhere on the grid.
+
+The game is simple: At each turn, a player has 5 seconds to act - move and throw a trap - lest the notorious Squid Game doll will shoot them down. 
+
+In order to win the game, you would need to trap the opponent, i.e., surround them with traps from all sides, so that cannot move anywhere (meaning the doll will take care of them), before they do that to you!
+
+
 
 ### 1.1 Organization
-The game is organized as a two-player game on a 7x7 board space. Every turn, a player first **moves** and then **throws a trap** somewhere on the board. 
+The game is organized as a two-player game on a 7x7 board space. Every turn, a player first **moves** (to make sure they wouldn't die) and then **throws a trap** somewhere on the board. 
 
-<img src="https://user-images.githubusercontent.com/55168908/142587004-8a5af0d4-6a1d-4bad-b5a3-cd21f51cab7b.png" height="400"/>
+![game1](https://user-images.githubusercontent.com/55168908/142688490-83efbc0d-064d-4d14-9546-144e694eecb6.png)
 
 
 ### 1.2 Movement
@@ -102,20 +118,32 @@ Note that the player is now maximizing their *Expected Utility* in every move (i
 
 ### Heuristics!
 
-Since the Search Space here is HUGE! 
+Since the Search Space here is HUGE(!), you will need to come up with useful heuristics for both *restricting the search space* as well as *evaluating the utility of a move.*
+
+A few basic ones you can start with:
+
+- **Improved Score (IS):** the difference between the current number of moves Player (You) can make and the current number of moves the opponent can make.
+- **Aggressive Improved Score (AIS):** Same as IS only with a 2:1 ratio applied to Opponent's moves.
+- **One Cell Lookahead Score (OCLS):** The difference between the Player's sum of possible moves looking one step ahead and the Opponent's sum of possible moves looking one step ahead
+
+Of course, you may choose to combine multiple heuristics and come up with your own heuristics!
 
 ### Hmm that's a lot. Where Do We Start?
 
 Fear not! Here's a very good recipe:
 
-1. Start with implementing a simple minimax. Observe improvements.
-2. Add Alpha-beta pruning. Observe improvements.
-3. Extend minimax to Expectiminimax by introducing the Chance node
+1. Start with making a random move under five seconds.
+2. Code basic heuristics
+3. Implement a simple Minimax. Observe improvements.
+4. Save current Player and make them the Opponent from now on!
+5. Add Alpha-beta pruning. Observe improvements!
+6. Extend minimax to Expectiminimax
+7. Code advanced heuristics
+8. DONE.
 
 ## Grading
 
 The competition is designed so that **all groups will be able to get a good grade regardless of their placement in the competition**. We will test your code against players of three difficulty levels: Easy, Medium, and Hard (still very doable as long as you implement everything). 
-* Grading & Logistics
-* Q&A
-* Resources
+After evaluating all teams against our players, we will create a tournament where you will compete against other groups and will be rewarded more points based on the number of groups you defeat!
 
+## * Q&A
