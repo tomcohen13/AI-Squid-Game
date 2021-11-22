@@ -43,7 +43,7 @@ class Grid():
         return grid_copy
 
 
-    def get_neighbors(self, pos, only_available = False):
+    def get_neighbors(self, pos, only_available = False, include_traps = False):
 
         """
         Description
