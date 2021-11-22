@@ -27,10 +27,9 @@ It is you against another contestant, and only one will survive!
 
 The players are placed on a gridded space and supplied with small traps which they can throw anywhere on the grid.
 
-The game is simple: At each turn, a player has 5 seconds to act - move and throw a trap - lest the notorious Squid Game doll will shoot them down. 
+The game is simple: At each turn, a player has 5 seconds to act - move and throw a trap - or else the notorious Squid Game doll will shoot them down. 
 
-In order to win the game, you would need to trap the opponent, i.e., surround them with traps from all sides, so that cannot move anywhere (meaning the doll will take care of them), before they do that to you!
-
+In order to win the game, you will need to trap the opponent, i.e., surround them with traps from all sides so that they cannot move anywhere - meaning the doll will take care of them - before they do that to you!
 
 
 ### 1.1 Organization
@@ -41,7 +40,7 @@ The game is organized as a two-player game on a 7x7 board space. Every turn, a p
 
 ### 1.2 Movement
 
-Each turn, a player can move one step in any possible direction, diagonals included (e.g., like King in chess), *so long as there is no trap placed in that cell and that it is within the borders of the grid*
+Each turn, a player can move one step in any possible direction, diagonals included (like King in chess), *so long as there is no trap placed in that cell and that it is within the borders of the grid*
 
 no traps             |  with traps
 :-------------------------:|:-------------------------:
@@ -50,7 +49,7 @@ no traps             |  with traps
 
 ### 1.3 Throwing a Trap
 
-Unlike movement, a trap can be thrown to *anywhere in the board*, with the exception of the opponents location - again, we want them alive! - and the player's location. Note that throwing a trap on top of another trap is possible but useless.
+Unlike movement, a trap can be thrown to *anywhere in the board*, with the exception of the Opponent's location and the Player's location. Note that throwing a trap on top of another trap is possible but useless.
 
 **However,** sadly, we are not on the olympic throwing team, and our aiming abilities deteriorate with distance, such that there is an increasing chance the trap will land on any of its neighboring cells. In fact, the chance *p* that it will land precisely on the cell we want is given as: 
 
@@ -65,7 +64,6 @@ The *n* surrounding cells divide the remainder equally between them, that is:
 ![image](https://user-images.githubusercontent.com/55168908/142583267-3231710e-d3ad-40c6-8452-0f38da4e324c.png)
 
 
-
 Example:
 
 Target             |  Probabilities of trap placement
@@ -75,7 +73,7 @@ Target             |  Probabilities of trap placement
 
 ### 1.4 Game Over?
 
-To win, you must "Trap" you opponent so that they could not possibly move in any direction, while you still can! Examples:
+Again, to win, you must "Trap" you opponent so that they could not possibly move in any direction, while you still can! Examples:
 
 Example 1 (Win)             |  Example 2 (Loss)
 :-------------------------:|:-------------------------:
@@ -124,7 +122,7 @@ Of course, you may choose to combine multiple heuristics and come up with your o
 
 Fear not! Here's a very good recipe:
 
-1. Start with making a random move under five seconds.
+1. Start with making a move + trap under five seconds.
 2. Code basic heuristics
 3. Implement a simple Minimax. Observe improvements.
 4. (Save current Player and make them the Opponent from now on!)
@@ -133,11 +131,30 @@ Fear not! Here's a very good recipe:
 7. Code advanced heuristics
 8. DONE.
 
-## 3. Grading
+*You do not need to implement the stochastic trap throw (it's implemented for you).*
+
+### 2.5 Things to think about
+1. You have five seconds to both move and throw the trap. Decide how much to allocate for each (you may want to test this!)
+2. You are only provided with a "dumb" player to play against. To test your player, you might want to create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `Opponent_[indicative description].py` file and place it in the folder `players`. Then, you'll be able to import that AI player (e.g., `from players.Opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
+3. Limit both your search *breadth* (i.e., what is the scope of cells you're checking given Player's/Opponent's position) and depth (recall Iterative Deepening) to make sure you're covering as much as possible given the time constraint!!!
+
+## 3. Using the Skeleton Code
+The  skeleton  code  includes  the  following  files.   Note  that  you  will  only  be  working  in one of  them,  and  the  rest are read-only:
+- **Read-only:** `Game.py`.  This is the driver program that loads your Player AI and Computer AI and begins a game where they compete with each other. See below on how to execute this program.
+- **Read-only:** `Grid.py` This  module  defines  the  Grid  object,  along  with  some  useful  operations: move(),getAvailableCells(),and clone(), which you may use in your code.  These are by no means the most efficient methods available, so if you wish to strive for better performance, feel free to ignore these and write your own helper methods in a separate file.
+- **Read-only:** `BaseAI.py` This is the base class for any AI component.  All AIs inherit from this module, andimplement thegetMove()function, which takes a Grid object as parameter and returns a move (there aredifferent ”moves” for different AIs).
+- **Read-only:** `ComputerAI.py`.   This  inherits  from  `BaseAI`.  The `getMove()` function  returns  a random computer action that is a tuple (x, y) indicating the location they decide to move. Similarly, the getTrap() function is where they *desire* to place the trap to (recall this is subject to chance).
+- **Writable:** `IntelligentAgent.py`.  You will code in this file.  The `IntelligentAgent` class should inherit from `BaseAI`. The getMove() function to implement must return a tuple that indicates the player’s new location.  This must be a valid move, given the traps on the board as well as the size of the board. Likewise, the `getTrap()` method is for you to implement and must return a tuple of the *desired* position for the trap. This is also where your player-optimizing logic lives and is executed. Feel free to create sub-modules for this file to use, and include any sub-modules in your submission.
+- **Read-only:** `BaseDisplayer.py` and `Displayer.py`. These print the grid. To test your code, execute the game manager like so:$ python3 GameManager.py
+
+To simulate the game, run `python3 Game.py`. Initially, the game is set so that to "dumb" ComputerAI player will play against each other. Change that by instantiating and using Player AI instead.
+
+
+## 4. Grading
 
 The competition is designed so that **all groups will be able to get a good grade regardless of their placement in the competition**. We will test your code against players of three difficulty levels: Easy, Medium, and Hard (still very doable as long as you implement everything). Those will account for at least 85% of your grade on the project. After evaluating all teams against our players, we will create a tournament where you will compete against other groups and will be rewarded more points based on the number of groups you defeat!
 
-## 4. Submission 
+## 5. Submission 
 
 Please submit the entire folder with all the files. The name of the folder must be the UNIs of all groups members, concatenated with underscores. For example, tc1234_gd5678. Additionally, you *MUST* submit a text file, named exactly as the folder (e.g., tc1234_gd5678.txt) describing each member's contribution to the project. We may take that into account when computing individual grades in the case that one member contributed significantly more than the other(s)!
 
