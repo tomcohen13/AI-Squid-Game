@@ -8,6 +8,8 @@ Code: Tom Cohen, Adam Lin, Gustave Ducrest, Rohith Ravindranath
 
 Professor : Ansaf Salleb-Aouissi
 
+**DEADLINE: December 9th**
+
 ## Preface and Learning Objectives
 
 In this (super exciting) project, we will use Adversarial AI to defeat a strategic opponent at a mind game. 
