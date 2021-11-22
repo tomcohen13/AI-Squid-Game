@@ -2,7 +2,7 @@
 
 The final coding challenge for COMS W4701 - Artificial Intelligence, Columbia University.
 
-Written by: Tom Cohen, 
+Written by: Tom Cohen, Adam Lin, Gustave Ducrest
 
 Professor : Ansaf Salleb-Aouissi
 
@@ -135,7 +135,7 @@ Fear not! Here's a very good recipe:
 1. Start with making a random move under five seconds.
 2. Code basic heuristics
 3. Implement a simple Minimax. Observe improvements.
-4. Save current Player and make them the Opponent from now on!
+4. (Save current Player and make them the Opponent from now on!)
 5. Add Alpha-beta pruning. Observe improvements!
 6. Extend minimax to Expectiminimax
 7. Code advanced heuristics
@@ -143,7 +143,21 @@ Fear not! Here's a very good recipe:
 
 ## Grading
 
-The competition is designed so that **all groups will be able to get a good grade regardless of their placement in the competition**. We will test your code against players of three difficulty levels: Easy, Medium, and Hard (still very doable as long as you implement everything). 
-After evaluating all teams against our players, we will create a tournament where you will compete against other groups and will be rewarded more points based on the number of groups you defeat!
+The competition is designed so that **all groups will be able to get a good grade regardless of their placement in the competition**. We will test your code against players of three difficulty levels: Easy, Medium, and Hard (still very doable as long as you implement everything). Those will account for at least 85% of your grade on the project. After evaluating all teams against our players, we will create a tournament where you will compete against other groups and will be rewarded more points based on the number of groups you defeat!
+
+## Submission 
+
+Please submit the entire folder with all the files. The name of the folder must be the UNIs of all groups members, concatenated with underscores. For example, tc1234_gd5678. Additionally, you *MUST* submit a text file, named exactly as the folder (e.g., tc1234_gd5678.txt) describing each member's contribution to the project. We may take that into account when computing individual grades in the case that one member contributed significantly more than the other(s)!
+
+**Note that we will only test the PlayerAI.py file so make sure all necessary functions are there!**
 
 ## * Q&A
+
+#### What are we allowed to use?** 
+You are definitely allowed to import commont libraries (e.g., numpy, itertools, etc.) as well as use/modify functions provided as part of the source code (e.g., the probabilistic trap throw). HOWEVER, you will need to implement all the Search Algorithms and Heuristics yourselves! 
+
+#### How should we divide the work?
+
+- **A group of 2:** We suggest dividing the Expectiminimax algorithms - one group member should code the Move Expectiminimax and its accompanying heuristics and the other should code the Throw expectiminimax and its heuristics. Additionally each member should code one Opponent player to play against.
+- **A groupd of 3:** We suggest one group member responsible for the Move Expectiminimax, another for the Throw Expectiminimax, and the third for both heuristics as well as coding AI Opponents to test the group's code against.
+
