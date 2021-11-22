@@ -2,6 +2,7 @@ import numpy as np
 from Grid import Grid
 from ComputerAI import ComputerAI
 from Displayer import Displayer
+from Utils import *
 
 PLAYER_TURN, COMPUTER_TURN = 0,1
 
@@ -52,10 +53,50 @@ class Game():
         """
         Validate move by checking if the cell has a value of anything but 0.
         """
-        if grid.getCellValue(move) != 0:
+        if grid.getCellValue(move) > 0:
             return False
 
         return True
+
+
+    def throw(self, player, grid : Grid, intended_position : tuple) :
+        '''
+        Description
+        ----------
+        Function returns the coordinates in which the trap lands, given an intended location.
+
+        Parameters
+        ----------
+
+        player : the player throwing the trap
+
+        grid : current game Grid
+
+        intended position : the (x,y) coordinates to which the player intends to throw the trap to.
+        '''
+        print(intended_position)
+        # find neighboring cells
+        neighbors = grid.get_neighbors(intended_position)
+
+        n = len(neighbors)
+        
+        probs = np.ones(1 + n)
+        
+        # compute probability of success, p
+        p = 1 - 0.05*(manhattan_distance(player.getPosition(), intended_position) - 1)
+
+        probs[0] = p
+
+        probs[1:] = np.ones(len(neighbors)) * ((1-p)/n)
+
+        # add desired coordinates to neighbors
+        neighbors.insert(0, intended_position)
+        
+        result = np.random.choice(np.arange(n + 1), p = probs)
+        
+        return neighbors[result]
+
+
 
     def play(self):
         
@@ -85,9 +126,10 @@ class Game():
                     self.over = True
                     print("invalid Player AI move!")
                 
-                trap = self.playerAI.getTrap(self.grid.clone())
+                intended_trap = self.playerAI.getTrap(self.grid.clone())
 
-                if self.is_valid(self.grid, trap) and not self.is_over():
+                if self.is_valid(self.grid, intended_trap) and not self.is_over():
+                    trap = self.throw(player=self.playerAI, grid=self.grid, intended_position=intended_trap)
                     self.grid.trap(trap)
                     print(f"Placing a trap in {trap}")
 
@@ -111,9 +153,10 @@ class Game():
                     self.over = True
                     print("invalid Computer AI Move")
 
-                trap = self.computerAI.getTrap(grid_copy)
+                intended_trap = self.computerAI.getTrap(self.grid.clone())
 
-                if self.is_valid(self.grid, trap) and not self.is_over():
+                if self.is_valid(self.grid, intended_trap) and not self.is_over():
+                    trap = self.throw(player=self.computerAI, grid=self.grid, intended_position=intended_trap)
                     self.grid.trap(trap)
                     print(f"Placing a trap in {trap}")
 
@@ -126,15 +169,6 @@ class Game():
 def main():
     playerAI = ComputerAI() # change this to PlayerAI() to test your player!
     computerAI = ComputerAI()
-<<<<<<< HEAD
-    game = Game(playerAI = playerAI, computerAI = computerAI, N = 7)
-    game.grid.get_neighbors()
-    # result = game.play()
-    # if result == 1: 
-        # print("Player 1 wins!")
-    # elif result == 2:
-        # print("Player 1 loses!")
-=======
     displayer = Displayer()
     game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
     
@@ -144,7 +178,6 @@ def main():
         print("Player 1 wins!")
     elif result == 2:
         print("Player 1 loses!")
->>>>>>> 7437a2880f00b236132f21dfbcdb0b556f9e17fe
 
 if __name__ == "__main__":
     main()

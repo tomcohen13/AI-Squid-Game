@@ -27,11 +27,17 @@ class PlayerAI(BaseAI):
         """ 
         YOUR CODE GOES HERE
 
-        The function should return a tuple of (x,y) coordinates to which the player moves.
+        The function should return a tuple of (x,y) coordinates to which the player *wants* 
+        to throw the trap. 
+        
+        You do not need to account for probabilities. We've implemented that for you.
 
         You may adjust the input variables as you wish but output has to be the coordinates.
         
         """
+        pass
+
+    def getPosition(self):
         pass
         
 

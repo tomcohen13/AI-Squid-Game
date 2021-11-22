@@ -29,7 +29,7 @@ class ComputerAI(BaseAI):
         return new_pos
 
     def getTrap(self, grid : Grid):
-        """Get the trap move of the player"""
+        """Get the *intended* trap move of the player"""
         
         # find all available cells in the grid
         available_cells = grid.getAvailableCells()
