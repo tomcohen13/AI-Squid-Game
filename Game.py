@@ -187,6 +187,10 @@ class Game():
                     trap = self.throw(self.computerAI, self.grid, intended_trap)
                     self.grid.trap(trap)
                     print(f"Trying to place a trap in {intended_trap} and placed a trap in {trap}")
+                else: 
+                    self.over = True
+                    print(f"Tried to put trap in {trap}")
+                    print("Invalid trap!")
 
             if self.is_over(turn):
                 self.over = True
