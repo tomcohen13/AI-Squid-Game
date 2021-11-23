@@ -2,13 +2,13 @@
 
 The final coding challenge for COMS W4701 - Artificial Intelligence, Columbia University.
 
+Professor : Ansaf Salleb-Aouissi
+
 Written by: Tom Cohen
 
 Code: Tom Cohen, Adam Lin, Gustave Ducrest, Rohith Ravindranath 
 
-Professor : Ansaf Salleb-Aouissi
-
-**DEADLINE: December 9th**
+**DEADLINE: December 10 at 11:59 PM (EDT)**
 
 ## Preface and Learning Objectives
 
@@ -17,11 +17,10 @@ In this (super exciting) project, we will use Adversarial AI to defeat a strateg
 ### Learning Objective
 
 By the end of this project you will have learned:
-1. **Minimax, ExpectiMinimax, and Alpha-Beta Pruning**
+1. **Minimax, ExpectiMinimax, Alpha-Beta Pruning, IDS**
 2. Inventive **Heuristics**!
 3. Adversarial Seach under **Time Constraints**
 4. How to **collaborate effectively**
-5. How to test your Player AI
 
 ## 1. Game Description
 
@@ -51,9 +50,9 @@ no traps             |  with traps
 
 ### 1.3 Throwing a Trap
 
-Unlike movement, a trap can be thrown to *anywhere in the board*, with the exception of the Opponent's location and the Player's location. Note that throwing a trap on top of another trap is possible but useless.
+Unlike movement, a trap can be thrown to *any cell in the board*, with the exception of the Opponent's location and the Player's location. Note that throwing a trap on top of another trap is possible but useless.
 
-**However,** sadly, we are not on the olympic throwing team, and our aiming abilities deteriorate with distance, such that there is an increasing chance the trap will land on any of its neighboring cells. In fact, the chance *p* that it will land precisely on the cell we want is given as: 
+**However,** sadly, we are not on the olympic throwing team, and our aiming abilities deteriorate with distance such that there is an increasing chance the trap will land on a cell that abuts the intended target. In fact, the chance *p* that it will land precisely on the desired cell is given as: 
 
 ![image](https://user-images.githubusercontent.com/55168908/142582036-d19b98ad-56e0-404a-8d07-cca66f4f54a7.png). 
 
@@ -92,40 +91,62 @@ In example 2: the player cannot move but the opponent still has a diagnoal move.
 
 ## 2. What to Code
 
-Two thoughtful actions are performed at each turn: One to maximize the chance of survival (moving), and the other to maximize the chance of winning the game (Trapping). So accordingly, we have two different Adversarial Search problems to compute at each turn!
+Two thoughtful actions are performed every turn: Moving maximizes the chance of survival, and Trapping maximize the chance of winning the game. 
+Accordingly, we have two different Adversarial Search problems to compute at each turn!
 
 ### 2.1 The Search Algorithm
-For **each** of the search problems, you will have to implement the ExpectiMinimax algorithm with Alpha-Beta Pruning!
+For **each** of the search problems, you will have to implement the ExpectiMinimax algorithm with Alpha-Beta Pruning and an imposed depth limit!
 
 ### 2.2 Expecti--What Now?
 Expectiminimax (indeed a mouthful) is a simple extension of the famous Minimax algorithm that we covered in class (Adversarial Search lecture)! 
-The only difference is that in the expectiminimax, we introduce an intermediate **Chance Node** that accounts for chance and uncertainty. As we have previously established, throwing the trap is not always accurate, so we have to take into account potential consequences as we navigate the game. The modification is demonstrated in the comparison below:
+The only difference is that in the Expectiminimax, we introduce an intermediate **Chance Node** that accounts for chance and uncertainty. As we have previously mentioned, throwing a trap is not always accurate, so we have to consider the consequences of that as we navigate the game. 
+The difference between the algorithms is demonstrated in the comparison below:
 
 
 Minimax             |  ExpectiMinimax
 :-------------------------:|:-------------------------:
 <img width="347" alt="minimax" src="https://user-images.githubusercontent.com/55168908/142590520-a3e29401-726a-4585-9579-c1dd47aee108.png">| <img width="431" alt="expecti" src="https://user-images.githubusercontent.com/55168908/142590403-aec560c3-1ede-4b49-81f4-57942bbbd990.png">
 
-As you can see, you are now trying to maximize the opponents moves, given the *chance* of them happening. For example, if we are to throw a trap and want to maximize our chance of winning, our tree will have a chance node with value *p* as well as *n* nodes with values *(1-p)/n* (see equations in 1.3: Throwing a Trap).
+For example, if we are to throw a trap and want to maximize our chance of winning, our tree will have a chance node with value *p* as well as *n* nodes with values *(1-p)/n* (see equations in 1.3: Throwing a Trap).
 The rest is the same! 
 
-Note that the player is now maximizing their *Expected Utility* in every move (if that sounds not-necessarily-optimal to you, you aren't wrong!).
+As you can see, you are now trying to maximize an outcome, given the *chance* of it happening, that it, the *Expected Utility* of every action (and if that sounds not-necessarily-optimal to you, you are not wrong!). 
+
+**Note:** the Throw tree search maximizes over the Opponent's **move** actions, which in turn minimizes the Player's winning chances by moving strategically. 
+The Move search tree, on the other hand, maximizes survival over the Opponent's **throw** actions (i.e., we ask ourselves: "Where would the Opponent throw their trap to, given that they're trying to minimze my chance of surviving?").
+
+#### 2.2.1 Depth Limit of 5
+
+Given the time constraint, we would like to limit the depth of our search to ensure maximum coverage (both breadth and depth). We certainly do not want to go into deep rabbit holes (i.e., what will happen 10 rounds from now) before visiting other, more immediate options. Therefore, we impose a maximum depth of at most 5. You may opt to do less than 5 after experimenting with different values.
+
+To do that, you can use one of the algorithms we've seen in class - the Iterative Deepening Search (IDS), which allows to control the maximum depth of the search. 
+Pseudocode:
+
+__function__ ITERATIVE-DEEPENING-SEARCH(_problem_) __returns__ a solution, or failure  
+&emsp;__for__ _depth_ = 0 to d; __do__  
+&emsp;&emsp;&emsp;_result_ &larr; DEPTH\-LIMITED\-SEARCH(_problem_,_depth_)  
+&emsp;&emsp;&emsp;__if__ _result_ &ne; cutoff __then return__ _result_
+
+That said, you may also decide to pass the depth as an argument when calling the recursive functions of the Minimax. Up to you!
+
 
 ### 2.3 Heuristics!
 
-Since the Search Space here is HUGE(!), you will need to come up with useful heuristics for both *restricting the search space* as well as *evaluating the utility of a move.*
+To evaluate the utility of an action, you will need to come up with clever heuristics for both *restricting the search space* as well as *evaluating utility.*
 
-A few basic ones you can start with:
+A few basic ones you can start with for evaluating utility:
 
 - **Improved Score (IS):** the difference between the current number of moves Player (You) can make and the current number of moves the opponent can make.
 - **Aggressive Improved Score (AIS):** Same as IS only with a 2:1 ratio applied to Opponent's moves.
 - **One Cell Lookahead Score (OCLS):** The difference between the Player's sum of possible moves looking one step ahead and the Opponent's sum of possible moves looking one step ahead
 
-Of course, you may choose to combine multiple heuristics and come up with your own heuristics!
+You may choose to combine multiple heuristics and come up with your own heuristics!
 
-### 2.4 Hmm that's a lot. Where Do We Start?
+Also, since the seach space here could be huge, one cannot possibly check all available cell in the board to find an optimal throw (imagine trying to compute the first, optimal move in chess). Therefore, you will need to think of a clever way to shrink your search scope (Hint: it should probably be some restricted amount of cells in the vicinity of the Opponent's location).
 
-Fear not! Here's a very good recipe:
+### 2.4 Hmm that was a lot. Where Do We Start?
+
+**Fear not! Here's a very good recipe:**
 
 1. Start with making a move + trap under five seconds.
 2. Code basic heuristics
