@@ -4,8 +4,13 @@ from ComputerAI import ComputerAI
 from Displayer import Displayer
 from PlayerAI import PlayerAI
 from Utils import *
+import time
 
 PLAYER_TURN, COMPUTER_TURN = 0,1
+
+# Time Limit Before Losing
+timeLimit = 0.5
+allowance = 0.05
 
 class Game():
     def __init__(self, playerAI = None, computerAI = None, N = 7, displayer = None):
@@ -36,8 +41,7 @@ class Game():
         self.grid.setCellValue(p2_index, 2)
         self.computerAI.setPosition(p2_index)
         
-    def is_over(self):
-
+    def is_over(self, turn):
         # check if Player has won
         # find available neighbors of player 1
         opponent_neighbors = self.grid.get_neighbors(self.computerAI.getPosition(), only_available=True)
@@ -53,6 +57,8 @@ class Game():
             self.over = True
             return 2
         
+        elif self.over:
+            return turn + 1
         else: 
             return 0
 
@@ -108,24 +114,31 @@ class Game():
         
         return neighbors[result]
 
+    def updateAlarm(self, currTime):
+        if currTime - self.prevTime > timeLimit + allowance:
+            self.over = True
+        else:
+            while time.process_time() - self.prevTime < timeLimit + allowance:
+                pass
 
+            self.prevTime = time.process_time()
 
     def play(self):
         
         self.initialize_game()
-
+        print(a)
         self.displayer.display(self.grid)
 
         turn = PLAYER_TURN
         
         while not self.over:
-
+            self.prevTime = time.process_time()
             grid_copy = self.grid.clone()
 
             move = None
             
             if turn == 0:
-                
+
                 print("Player's Turn: ")
 
                 # find best move; should return two coordinates - new position and bombed tile.
@@ -142,10 +155,10 @@ class Game():
                 
                 intended_trap = self.playerAI.getTrap(self.grid.clone())
 
-                if self.is_valid_trap(self.grid, intended_trap) and not self.is_over():
+                if self.is_valid_trap(self.grid, intended_trap):
                     trap = self.throw(self.playerAI, self.grid, intended_trap)
                     self.grid.trap(trap)
-                    print(f"Placing a trap in {trap}")
+                    print(f"Trying to place a trap in {intended_trap} and placed a trap in {trap}")
 
                 else: 
                     self.over = True
@@ -153,14 +166,14 @@ class Game():
                     print("Invalid trap!")
 
             else:
-                
+
                 print("Opponent's Turn : ")
                 
                 # make move
                 move = self.computerAI.getMove(grid_copy)
 
                 # check if move is valid; perform if it is.
-                if self.is_valid_move(self.grid, move) and not self.is_over():
+                if self.is_valid_move(self.grid, move):
                     self.grid.move(move, turn + 1)
                     print(f"Moving to {move}")
 
@@ -170,16 +183,20 @@ class Game():
 
                 intended_trap = self.computerAI.getTrap(self.grid.clone())
 
-                if self.is_valid_trap(self.grid, intended_trap) and not self.is_over():
+                if self.is_valid_trap(self.grid, intended_trap):
                     trap = self.throw(self.computerAI, self.grid, intended_trap)
                     self.grid.trap(trap)
-                    print(f"Placing a trap in {trap}")
+                    print(f"Trying to place a trap in {intended_trap} and placed a trap in {trap}")
 
+            if self.is_over(turn):
+                self.over = True
+            
+            self.updateAlarm(time.process_time())
             turn = 1 - turn
             self.displayer.display(self.grid)
             # self.grid.print_grid()
 
-        return self.is_over()
+        return self.is_over(turn)
 
 def main():
     playerAI = ComputerAI() # change this to PlayerAI() to test your player!
