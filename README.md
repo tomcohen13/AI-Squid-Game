@@ -71,6 +71,7 @@ Target             |  Probabilities of trap placement
 :-------------------------:|:-------------------------:
 ![trap1](https://user-images.githubusercontent.com/55168908/142584513-d4e70925-a2ad-436d-895c-e4cac90fbbcf.png)| ![trap2](https://user-images.githubusercontent.com/55168908/142584586-d40bca87-99e7-4b12-b761-2f3eb83190d5.png)
 
+This is implemented for you in a function called *throw* which takes in the position to which you want to throw the trap and returns the position in which it lands. So no need to worry about implementing this. But you will need to consider those probabilities when coding your Minimax.
 
 ### 1.4 Game Over?
 
@@ -142,7 +143,7 @@ A few basic ones you can start with for evaluating utility:
 
 You may choose to combine multiple heuristics and come up with your own heuristics!
 
-Also, since the seach space here could be huge, one cannot possibly check all available cell in the board to find an optimal throw (imagine trying to compute the first, optimal move in chess). Therefore, you will need to think of a clever way to shrink your search scope (Hint: it should probably be some restricted amount of cells in the vicinity of the Opponent's location).
+Also, since the seach space here could be huge, one cannot possibly check all available cell in the board to find an optimal throw (imagine trying to compute the first, optimal move in chess). Therefore, you will need to think of a clever way to reduce your search scope (Hint: it could be some number of cells in the vicinity of the Opponent's location).
 
 ### 2.4 Hmm that was a lot. Where Do We Start?
 
@@ -161,8 +162,8 @@ Also, since the seach space here could be huge, one cannot possibly check all av
 
 ### 2.5 Things to think about
 1. You have five seconds to both move and throw the trap. Decide how much to allocate for each (you may want to test this!)
-2. You are only provided with a "dumb" player to play against. To test your player, you might want to create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `Opponent_[indicative description].py` file and place it in the folder `players`. Then, you'll be able to import that AI player (e.g., `from players.Opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
-3. Limit both your search *breadth* (i.e., what is the scope of cells you're checking given Player's/Opponent's position) and depth (recall Iterative Deepening) to make sure you're covering as much as possible given the time constraint!!!
+2. You are only provided with a "dumb" player to play against. To test your player, you should create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `Opponent_[indicative description].py` file and place it in the folder `test_players`. Then, you'll be able to import that AI player (e.g., `from test_players.Opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
+3. Limit both your search *breadth* (i.e., what is the scope of cells you're checking given Player's/Opponent's position) and depth to make sure you're covering as much as possible given the time constraint!!!
 
 ## 3. Using the Skeleton Code
 The  skeleton  code  includes  the  following  files.   Note  that  you  will  only  be  working  in one of  them,  and  the  rest are read-only:
@@ -170,7 +171,7 @@ The  skeleton  code  includes  the  following  files.   Note  that  you  will  o
 - **Read-only:** `Grid.py` This  module  defines  the  Grid  object,  along  with  some  useful  operations: move(),getAvailableCells(),and clone(), which you may use in your code.  These are by no means the most efficient methods available, so if you wish to strive for better performance, feel free to ignore these and write your own helper methods in a separate file.
 - **Read-only:** `BaseAI.py` This is the base class for any AI component.  All AIs inherit from this module, andimplement thegetMove()function, which takes a Grid object as parameter and returns a move (there aredifferent ”moves” for different AIs).
 - **Read-only:** `ComputerAI.py`.   This  inherits  from  `BaseAI`.  The `getMove()` function  returns  a random computer action that is a tuple (x, y) indicating the location they decide to move. Similarly, the getTrap() function is where they *desire* to place the trap to (recall this is subject to chance).
-- **Writable:** `IntelligentAgent.py`.  You will code in this file.  The `IntelligentAgent` class should inherit from `BaseAI`. The getMove() function to implement must return a tuple that indicates the player’s new location.  This must be a valid move, given the traps on the board as well as the size of the board. Likewise, the `getTrap()` method is for you to implement and must return a tuple of the *desired* position for the trap. This is also where your player-optimizing logic lives and is executed. Feel free to create sub-modules for this file to use, and include any sub-modules in your submission.
+- **Writable:** `PlayerAI.py`.  You will code in this file.  The `PlayerAI` class should inherit from `BaseAI`. The getMove() function to implement must return a tuple that indicates the player’s new location.  This must be a valid move, given the traps on the board as well as the size of the board. Likewise, the `getTrap()` method is for you to implement and must return a tuple of the *desired* position for the trap. This is also where your player-optimizing logic lives and is executed. Feel free to create sub-modules for this file to use, and include any sub-modules in your submission.
 - **Read-only:** `BaseDisplayer.py` and `Displayer.py`. These print the grid. To test your code, execute the game manager like so:$ python3 GameManager.py
 
 To simulate the game, run `python3 Game.py`. Initially, the game is set so that to "dumb" ComputerAI player will play against each other. Change that by instantiating and using Player AI instead.
