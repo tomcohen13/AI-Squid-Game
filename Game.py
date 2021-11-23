@@ -126,7 +126,7 @@ class Game():
     def play(self):
         
         self.initialize_game()
-        print(a)
+
         self.displayer.display(self.grid)
 
         turn = PLAYER_TURN
