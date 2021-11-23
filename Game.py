@@ -15,8 +15,12 @@ allowance = 0.05
 class Game():
     def __init__(self, playerAI = None, computerAI = None, N = 7, displayer = None):
         '''
+        Description
+        ----------
+        Construct new game given two players, board size and displayer.
+
         Parameters
-        -----------
+        ----------
         playerAI   - Human player AI, of type PlayerAI. default = None 
 
         computerAI - Human or Computer Opponent. default = None
@@ -42,6 +46,7 @@ class Game():
         self.computerAI.setPosition(p2_index)
         
     def is_over(self, turn):
+        """Check if game is over, i.e., Player or Opponent has no moves to make"""
         # check if Player has won
         # find available neighbors of player 1
         opponent_neighbors = self.grid.get_neighbors(self.computerAI.getPosition(), only_available=True)
@@ -63,14 +68,14 @@ class Game():
             return 0
 
     def is_valid_move(self, grid : Grid, move : tuple):
-        '''Validate move - cell has to be 0'''
+        '''Validate move - cell has to be available'''
         if grid.getCellValue(move) == 0:
             return True
 
         return False
 
     def is_valid_trap(self, grid : Grid, trap : tuple):
-        '''Validate trap - cell can't be greater than zero'''
+        '''Validate trap - cell can't be a player'''
 
         if grid.getCellValue(trap) > 0:
             return False
@@ -124,7 +129,7 @@ class Game():
             self.prevTime = time.process_time()
 
     def play(self):
-        
+        print("AI SQUID GAME")
         self.initialize_game()
 
         self.displayer.display(self.grid)
@@ -158,7 +163,7 @@ class Game():
                 if self.is_valid_trap(self.grid, intended_trap):
                     trap = self.throw(self.playerAI, self.grid, intended_trap)
                     self.grid.trap(trap)
-                    print(f"Trying to place a trap in {intended_trap} and placed a trap in {trap}")
+                    print(f"Throwing a trap to: {intended_trap}. Trap landed in {trap}")
 
                 else: 
                     self.over = True
@@ -186,7 +191,7 @@ class Game():
                 if self.is_valid_trap(self.grid, intended_trap):
                     trap = self.throw(self.computerAI, self.grid, intended_trap)
                     self.grid.trap(trap)
-                    print(f"Trying to place a trap in {intended_trap} and placed a trap in {trap}")
+                    print(f"Throwing a trap to: {intended_trap}. Trap landed in {trap}")
                 else: 
                     self.over = True
                     print(f"Tried to put trap in {trap}")
