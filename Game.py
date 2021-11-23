@@ -91,7 +91,7 @@ class Game():
 
         intended position : the (x,y) coordinates to which the player intends to throw the trap to.
         '''
-        print(intended_position)
+ 
         # find neighboring cells
         neighbors = grid.get_neighbors(intended_position)
 
