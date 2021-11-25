@@ -23,8 +23,6 @@ class ComputerAI(BaseAI):
 
         # make random move
         new_pos = random.choice(available_moves) if available_moves else None
-        
-        self.setPosition(new_pos)
 
         return new_pos
 

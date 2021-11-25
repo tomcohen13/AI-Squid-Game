@@ -1,5 +1,10 @@
 import numpy as np
 import random
+import sys
+import os 
+# setting path to parent directory
+sys.path.append(os.getcwd())
+
 from BaseAI import BaseAI
 from Grid import Grid
 
@@ -24,16 +29,23 @@ class EasyAI(BaseAI):
         # make random move
         new_pos = random.choice(available_moves) if available_moves else None
         
-        self.setPosition(new_pos)
-
         return new_pos
 
     def getTrap(self, grid : Grid):
+
+        """EasyAI throws randomly to the immediate neighbors of the opponent"""
         
+        # find players
+        for i in range(grid.getMap().shape[0]):
+            for j in range(grid.getMap().shape[1]):
+                if grid.getCellValue((i,j)) > 0 and (i,j) != self.getPosition():
+                    opponent = (i,j)
+                    break
+
         # find all available cells in the grid
-        available_cells = grid.getAvailableCells()
+        available_cells = grid.get_neighbors(opponent, only_available=True)
 
-        # find all available cells
-        trap = random.choice(available_cells) if available_cells else None
-
+        # throw to one of the available cells randomly
+        trap = random.choice(available_cells)
+    
         return trap
