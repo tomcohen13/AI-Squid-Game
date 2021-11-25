@@ -47,14 +47,18 @@ class MediumAI(BaseAI):
         """EasyAI throws randomly to the immediate neighbors of the opponent"""
         
         # find players
-   
-        opponent = self.find_opponent(grid)
+        opponent = grid.find(3 - self.player_num)
 
         # find all available cells in the grid
-        available_cells = grid.get_neighbors(opponent, only_available=True)
+        available_cells = grid.get_neighbors(opponent, only_available = True)
+
+        states = [grid.clone().trap(cell) for cell in available_cells]
+
+        # find trap that minimizes opponent's moves
+        am_scores = np.array([AM(state, 3 - self.player_num) for state in states])
 
         # throw to one of the available cells randomly
-        trap = random.choice(available_cells)
+        trap = available_cells[np.argmin(am_scores)]
     
         return trap
 
