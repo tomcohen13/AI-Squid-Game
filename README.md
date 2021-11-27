@@ -136,14 +136,13 @@ We compute the probabilities of each of them (for now I will ignore the collater
 
 And the search tree might look something like this: 
 
-![image](https://user-images.githubusercontent.com/55168908/143670660-22086751-fffb-47df-9309-4bbf9ae34fb5.png)
+<img width="1000" alt="tree" src="https://user-images.githubusercontent.com/55168908/143676176-a4c57aff-b1ab-4292-9ad8-64f974907802.png">
 
+As you can see, you are now trying to maximize an outcome given the *chance* of it happening, i.e., the *Expected Utility* of every action (and if that sounds not-necessarily-optimal to you, you are not wrong!). 
 
-As you can see, you are now trying to maximize an outcome, given the *chance* of it happening, that is, the *Expected Utility* of every action (and if that sounds not-necessarily-optimal to you, you are not wrong!). 
+**Note:** the *Trap* search tree maximizes over the Opponent's Move actions ("what would be the most strategic place to place a trap if the Opponent moves optimally"). The *Move* search tree maximizes over the Opponent's Trap actions ("What would be the best move, if the Opponent plays optimally")
 
-**Note:** the *Trap* search tree maximizes over the Opponent's **move** actions. The *Move* search tree maximizes survival over the Opponent's **Trap** actions (i.e., we ask ourselves: "Where would the Opponent throw their trap to, given that they're trying to minimze my chance of surviving?").
-
-So expect to have different search trees for the different problems -- and this is why this is a group project!
+So expect to have two different search trees for the two different problems -- and this is why this is a group project!
 
 #### 2.2 Depth Limit of 5
 
@@ -193,6 +192,9 @@ Also, since the seach space here could be huge, one cannot possibly check all av
 1. You have five seconds to both move and throw the trap. Decide how much to allocate for each (you may want to test this!)
 2. You are only provided with a "dumb" player to play against. To test your player, you should create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `Opponent_[indicative description].py` file and place it in the folder `test_players`. Then, you'll be able to import that AI player (e.g., `from test_players.Opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
 3. Limit both your search *breadth* (i.e., what is the scope of cells you're checking given Player's/Opponent's position) and depth to make sure you're covering as much as possible given the time constraint!!!
+4. Think of and treat the two search problems as separate though with some interaction. Draw the search trees of the two problems to get a better understanding of the recursive flow of information in each.
+5. If things get too complicated, focus on the main part and ignore the rest (i.e., you don't _have_ to account for the neighboring cells in the trap search tree; you can assume the probability of success _p_ will remain the same, or approximately the same, deeper in the tree; etc.)
+
 
 ## 3. Using the Skeleton Code
 The  skeleton  code  includes  the  following  files.   Note  that  you  will  only  be  working  in one of  them,  and  the  rest are read-only:
@@ -212,14 +214,14 @@ The competition is designed so that **all groups will be able to get a good grad
 
 ## 5. Submission 
 
-Please submit the entire folder with all the files. The name of the folder must be the UNIs of all groups members, concatenated with underscores. For example, tc1234_gd5678. Additionally, you *MUST* submit a text file, named exactly as the folder (e.g., tc1234_gd5678.txt) describing each member's contribution to the project. We may take that into account when computing individual grades in the case that one member contributed significantly more than the other(s)!
+Please submit the entire folder with all the files. The name of the folder must be the UNIs of all groups members, concatenated with underscores. For example, tc1234_gd5678. Additionally, you *MUST* submit a text file, named exactly as the folder (e.g., `tc1234_gd5678.txt`) describing each member's contribution to the project. We may take that into account when computing individual grades in the case that one member contributed significantly more than the other(s)!
 
-**Note that we will only test the PlayerAI.py file so make sure all necessary functions are there!**
+Note that we will only test the `PlayerAI.py` file.
 
 ## 5. Q&A
 
 #### What are we allowed to use?** 
-You are definitely allowed to import commont libraries (e.g., numpy, itertools, etc.) as well as use/modify functions provided as part of the source code (e.g., the probabilistic trap throw). HOWEVER, you will need to implement all the Search Algorithms and Heuristics yourselves! 
+You are definitely allowed to import commont libraries (e.g., numpy, itertools, etc.) as well as use/modify functions provided in the skeleton code (e.g., the probabilistic trap throw). HOWEVER, you will need to implement all the Search Algorithms and Heuristics yourselves! 
 
 #### How should we divide the work?
 
