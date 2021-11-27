@@ -8,17 +8,23 @@ sys.path.append(os.getcwd())
 from BaseAI import BaseAI
 from Grid import Grid
 
+OPPONENT = lambda player: 3 - player
+
 class EasyAI(BaseAI):
 
     def __init__(self, initial_position = None) -> None:
         super().__init__()
         self.pos = initial_position
+        self.player_num = None
 
     def setPosition(self, new_pos: tuple):
         self.pos = new_pos
     
     def getPosition(self):
         return self.pos 
+
+    def setPlayerNum(self, num):
+        self.player_num = num
 
     def getMove(self, grid):
         """ Returns a random, valid move """
@@ -35,13 +41,9 @@ class EasyAI(BaseAI):
 
         """EasyAI throws randomly to the immediate neighbors of the opponent"""
         
-        # find players
-        for i in range(grid.getMap().shape[0]):
-            for j in range(grid.getMap().shape[1]):
-                if grid.getCellValue((i,j)) > 0 and (i,j) != self.getPosition():
-                    opponent = (i,j)
-                    break
-
+        # find opponent
+        opponent = grid.find(3 - self.player_num)
+        
         # find all available cells in the grid
         available_cells = grid.get_neighbors(opponent, only_available=True)
 

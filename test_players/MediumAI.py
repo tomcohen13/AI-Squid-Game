@@ -52,18 +52,23 @@ class MediumAI(BaseAI):
         # find all available cells in the grid
         available_cells = grid.get_neighbors(opponent, only_available = True)
 
+        # edge case - if there are no available cell around opponent, then 
+        # player constitutes last trap and will win. throwing randomly.
+        if not available_cells:
+            return random.choice(grid.getAvailableCells())
+            
         states = [grid.clone().trap(cell) for cell in available_cells]
 
         # find trap that minimizes opponent's moves
         am_scores = np.array([AM(state, 3 - self.player_num) for state in states])
 
         # throw to one of the available cells randomly
-        trap = available_cells[np.argmin(am_scores)]
+        trap = available_cells[np.argmin(am_scores)] 
     
         return trap
 
     def find_opponent(self, grid : Grid) -> tuple:
-        options = np.vstack(np.where(grid.getMap() > 0)).T
+        options = np.argwhere(grid.getMap() > 0)
         for i,j in options:
             if (i,j) != self.getPosition():
                 return (i,j)
