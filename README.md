@@ -177,23 +177,22 @@ Also, since the seach space here could be huge, one cannot possibly check all av
 
 **Fear not! Here's a very good recipe:**
 
-1. Start with making a move + trap under five seconds.
-2. Code basic heuristics
-3. Implement a simple Minimax. Observe improvements.
-4. (Save current Player and make them the Opponent from now on!)
+1. Start with making a random Move + Trap under five seconds.
+2. Code basic heuristics for Moving and Trapping. Save Player and make it the Opponent from now on!
+3. Implement a simple Minimax with basic Heuristics. 
+4. Enforce depth limit. Save Player and make it the Opponent from now on!
 5. Add Alpha-beta pruning. Observe improvements!
-6. Extend minimax to Expectiminimax
-7. Code advanced heuristics
-8. DONE.
+6. Hack some more advanced heuristics of your creation. Almost there!!
+7. Expand Minimax to Expectiminimax, taking probability of success into account.
 
-*You do not need to implement the stochastic trap throw (it's implemented for you).*
+DONE.
 
-### 2.5 Things to think about
-1. You have five seconds to both move and throw the trap. Decide how much to allocate for each (you may want to test this!)
-2. You are only provided with a "dumb" player to play against. To test your player, you should create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `Opponent_[indicative description].py` file and place it in the folder `test_players`. Then, you'll be able to import that AI player (e.g., `from test_players.Opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
+### 2.5 Things to think about while hacking
+1. You have five seconds to move _and_ throw a trap. Decide how much to allocate for each (you may want to test this!)
+2. To test your Player's performance, you should create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `opponent_[indicative description].py` file and place it in the folder `test_players`. Then, you'll be able to import that AI player (e.g., `from test_players.opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
 3. Limit both your search *breadth* (i.e., what is the scope of cells you're checking given Player's/Opponent's position) and depth to make sure you're covering as much as possible given the time constraint!!!
-4. Think of and treat the two search problems as separate though with some interaction. Draw the search trees of the two problems to get a better understanding of the recursive flow of information in each.
-5. If things get too complicated, focus on the main part and ignore the rest (i.e., you don't _have_ to account for the neighboring cells in the trap search tree; you can assume the probability of success _p_ will remain the same, or approximately the same, deeper in the tree; etc.)
+4. Think of and treat the two search problems as separate though with some interaction. Consider drawing the search trees of the two problems to get a better understanding of the recursive flow of information in each.
+5. If things get too complicated, focus on the main part and ignore the rest (i.e., you don't _have_ to account for the neighboring cells in the trap search tree; you _may_ assume the probability of success _p_ will remain the same, or approximately the same, deeper in the search tree; etc.)
 
 
 ## 3. Using the Skeleton Code
