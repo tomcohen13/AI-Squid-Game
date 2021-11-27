@@ -35,8 +35,8 @@ To win the game, you will need to *trap the opponent*, that is, surround them wi
 ### 1.1 Organization
 The game is organized as a two-player game on a 7x7 board space. Every turn, a player first **moves** and then **throws a trap** somewhere on the board. 
 
-![game1](https://user-images.githubusercontent.com/55168908/142688490-83efbc0d-064d-4d14-9546-144e694eecb6.png)
-
+<img width="800" src="https://user-images.githubusercontent.com/55168908/142688490-83efbc0d-064d-4d14-9546-144e694eecb6.png">
+.
 
 ### 1.2 Movement
 
