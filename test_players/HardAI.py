@@ -46,7 +46,7 @@ class HardAI(BaseAI):
         Description
         -----------
         The Max node of the Minimax search tree of Move.
-        The function maximizes utility over a static opponent throwing traps strategically.
+        The function maximizes utility over a *static* opponent throwing traps strategically.
         Uses Alpha-Beta Pruning to skip unpromising branches of the tree.
 
         Parameters
