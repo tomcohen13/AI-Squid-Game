@@ -1,11 +1,10 @@
 import numpy as np
 import random
-import sys
 import time
+import sys
 import os 
 # setting path to parent directory
 sys.path.append(os.getcwd())
-
 from BaseAI import BaseAI
 from Grid import Grid
 
@@ -155,35 +154,8 @@ class HardAI(BaseAI):
         else :
             return lose or win or time >= TRAP_TIME_LIMIT or depth >= MAX_DEPTH
 
-    
-    def _getTrap(self, grid : Grid):
-
-        """EasyAI throws randomly to the immediate neighbors of the opponent"""
-        
-        # find players
-        opponent = grid.find(3 - self.player_num)
-
-        # find all available cells in the grid
-        available_cells = grid.get_neighbors(opponent, only_available = True)
-
-        # edge case - if there are no available cell around opponent, then 
-        # player constitutes last trap and wins. throwing randomly.
-        if not available_cells:
-            return random.choice(grid.getAvailableCells())
-            
-        states = [grid.clone().trap(cell) for cell in available_cells]
-
-        # find trap that minimizes opponent's moves
-        scores = np.array([IS(state, 3 - self.player_num) for state in states])
-
-        # throw to one of the available cells randomly
-        trap = available_cells[np.argmin(scores)] 
-    
-        return trap
-
     def getTrap(self, grid : Grid):
         trap, _ = self._best_trap(grid)
-        print(trap)
         return trap
 
     def _best_trap(self, grid: Grid):
