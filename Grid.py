@@ -19,12 +19,11 @@ class Grid():
         """
         Returns all available cells in the grid in the form of [(x_0,y_0), ..., (x_n, y_n)]
         """
-        indices = np.where(self.map == 0)
         
-        available = [(x,y) for x,y in list(zip(indices[0], indices[1]))]
-        
-        return available
+        return [(x,y) for x,y in np.argwhere(self.map == 0)]
     
+    def getMap(self):
+        return self.map
 
     def setCellValue(self, pos: tuple, val):
         self.map[pos] = val
@@ -42,8 +41,15 @@ class Grid():
         grid_copy.map = deepcopy(self.map)
         return grid_copy
 
+    def find(self, player_num):
+        try:
+            result = tuple(np.argwhere(self.map == player_num)[0])
+        except:
+            print(self.map)
+            print(np.argwhere(self.map == player_num))
+        return result
 
-    def get_neighbors(self, pos, only_available = False, include_traps = False):
+    def get_neighbors(self, pos, only_available = False):
 
         """
         Description
@@ -73,6 +79,7 @@ class Grid():
 
 
     def move(self, move, player):
+
         """
         Description 
         -----------
@@ -86,17 +93,16 @@ class Grid():
         player: the identifier of the player (1 for human, 2 for computer)
 
         """
+
         old_pos = np.where(self.map == player)
         self.map[old_pos] = 0
         self.map[move] = player
 
-        return
+        return self
 
     def trap(self, pos):
         self.map[pos] = -1
-
-        return
-
+        return self
 
     def print_grid(self):
         print(self.map)

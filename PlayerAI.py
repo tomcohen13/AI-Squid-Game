@@ -10,6 +10,7 @@ class PlayerAI(BaseAI):
     def __init__(self) -> None:
         # You may choose to add attributes to your player - up to you!
         super().__init__()
+        self.pos = None
         
     
     def getMove(self, grid: Grid) -> tuple:
@@ -27,18 +28,22 @@ class PlayerAI(BaseAI):
         """ 
         YOUR CODE GOES HERE
 
-        The function should return a tuple of (x,y) coordinates to which the player *wants* 
-        to throw the trap. 
+        The function should return a tuple of (x,y) coordinates to which the player *WANTS* to throw the trap.
         
-        You do not need to account for probabilities. We've implemented that for you.
+        Here you'll need to implement the Expectiminimax algorithm, taking into account the probabilities of it landing
+        in the positions you wan. Note that you are not required to account for the probabilities of it landing in a
+        different cell.
 
         You may adjust the input variables as you wish but output has to be the coordinates.
         
         """
         pass
-
+    
     def getPosition(self):
-        pass
+        return self.pos
+
+    def setPosition(self, new_position):
+        self.pos = new_position 
         
 
     

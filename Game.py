@@ -3,10 +3,15 @@ from Grid import Grid
 from ComputerAI import ComputerAI
 from Displayer import Displayer
 from PlayerAI import PlayerAI
+from test_players.EasyAI import EasyAI
+from test_players.HardAI import HardAI
+from test_players.MediumAI import MediumAI
 from Utils import *
 import time
 
-PLAYER_TURN, COMPUTER_TURN = 0,1
+from test_players.MediumAI import MediumAI
+
+PLAYER_TURN, COMPUTER_TURN = 1,2
 
 # Time Limit Before Losing
 timeLimit = 0.5
@@ -37,13 +42,15 @@ class Game():
 
     def initialize_game(self):
 
-        p1_index, p2_index = (0, self.dim // 2), (self.dim -1, self.dim // 2)
+        p1_index, p2_index = (0, self.dim // 2), (self.dim - 1, self.dim // 2)
         
         self.grid.setCellValue(p1_index, 1)
         self.playerAI.setPosition(p1_index)
+        self.playerAI.setPlayerNum(1)
 
         self.grid.setCellValue(p2_index, 2)
         self.computerAI.setPosition(p2_index)
+        self.computerAI.setPlayerNum(2)
         
     def is_over(self, turn):
         """Check if game is over, i.e., Player or Opponent has no moves to make"""
@@ -63,15 +70,18 @@ class Game():
             return 2
         
         elif self.over:
-            return turn + 1
+            return turn
+
         else: 
             return 0
 
-    def is_valid_move(self, grid : Grid, move : tuple):
-        '''Validate move - cell has to be available'''
-        if grid.getCellValue(move) == 0:
-            return True
+    def is_valid_move(self, grid : Grid, player, move : tuple):
 
+        '''Validate move - cell has to be available and immediate neighbor'''
+        
+        if grid.getCellValue(move) == 0 and move in grid.get_neighbors(player.getPosition()):
+            return True
+        
         return False
 
     def is_valid_trap(self, grid : Grid, trap : tuple):
@@ -79,9 +89,10 @@ class Game():
 
         if grid.getCellValue(trap) > 0:
             return False
+
         return True
 
-    def throw(self, player, grid : Grid, intended_position : tuple) :
+    def throw(self, player, grid : Grid, intended_position : tuple) -> tuple:
         '''
         Description
         ----------
@@ -95,6 +106,11 @@ class Game():
         grid : current game Grid
 
         intended position : the (x,y) coordinates to which the player intends to throw the trap to.
+
+        Returns
+        -------
+        Position (x_0,y_0) in which the trap landed : tuple
+
         '''
  
         # find neighboring cells
@@ -115,6 +131,7 @@ class Game():
         # add desired coordinates to neighbors
         neighbors.insert(0, intended_position)
         
+        # return 
         result = np.random.choice(np.arange(n + 1), p = probs)
         
         return neighbors[result]
@@ -122,6 +139,7 @@ class Game():
     def updateAlarm(self, currTime):
         if currTime - self.prevTime > timeLimit + allowance:
             self.over = True
+            print("Went over time. Doll Shot!")
         else:
             while time.process_time() - self.prevTime < timeLimit + allowance:
                 pass
@@ -129,6 +147,8 @@ class Game():
             self.prevTime = time.process_time()
 
     def play(self):
+        """ DO NOT MODIFY """
+
         print("AI SQUID GAME")
         self.initialize_game()
 
@@ -142,7 +162,7 @@ class Game():
 
             move = None
             
-            if turn == 0:
+            if turn == 1:
 
                 print("Player's Turn: ")
 
@@ -150,8 +170,9 @@ class Game():
                 move = self.playerAI.getMove(grid_copy)
 
                 # if move is valid, perform it
-                if self.is_valid_move(self.grid, move):
-                    self.grid.move(move, turn + 1)
+                if self.is_valid_move(self.grid, self.playerAI, move):
+                    self.grid.move(move, turn)
+                    self.playerAI.setPosition(move)
                     print(f"Moving to {move}")
                 else:
                     self.over = True
@@ -178,8 +199,9 @@ class Game():
                 move = self.computerAI.getMove(grid_copy)
 
                 # check if move is valid; perform if it is.
-                if self.is_valid_move(self.grid, move):
-                    self.grid.move(move, turn + 1)
+                if self.is_valid_move(self.grid, self.computerAI, move):
+                    self.grid.move(move, turn)
+                    self.computerAI.setPosition(move)
                     print(f"Moving to {move}")
 
                 else:
@@ -201,19 +223,19 @@ class Game():
                 self.over = True
             
             self.updateAlarm(time.process_time())
-            turn = 1 - turn
+            turn = 3 - turn
             self.displayer.display(self.grid)
             # self.grid.print_grid()
 
         return self.is_over(turn)
 
 def main():
-    playerAI = ComputerAI() # change this to PlayerAI() to test your player!
-    computerAI = ComputerAI()
+
+    playerAI = HardAI() # change this to PlayerAI() to test your player!
+    computerAI = MediumAI() # change this to a more sophisticated player you've coded
     displayer = Displayer()
     game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
     
-
     result = game.play()
     if result == 1: 
         print("Player 1 wins!")
