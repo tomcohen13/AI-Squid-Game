@@ -216,7 +216,7 @@ class Game():
                     print(f"Throwing a trap to: {intended_trap}. Trap landed in {trap}")
                 else: 
                     self.over = True
-                    print(f"Tried to put trap in {trap}")
+                    print(f"Tried to put trap in {intended_trap}")
                     print("Invalid trap!")
 
             if self.is_over(turn):
