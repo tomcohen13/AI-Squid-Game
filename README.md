@@ -245,7 +245,6 @@ You are welcome to import libraries such as numpy, itertools, etc. (if you're un
 ## 6. Hints & Hacks (will get updated regularly)
 
 - The Opponent's player number is always `3 - self.player_num` (useful when wishing to find the opponent on the board). Do not assume Opponnent will always be Player 2, because during the competition you might be!
-- The signature of a `maximize` function might look something like this: `maximize(self, grid : Grid, alpha, beta, depth, start_time)`. But not necessarily.
 - To make a copy of the grid/state (will be *very* useful), use `grid.clone()`
 - to import a `BaseAI` to a player in the `test_players` subfolder, you can add the following lines to the top of your player file:
 ```
