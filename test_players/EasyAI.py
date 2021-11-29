@@ -44,7 +44,7 @@ class EasyAI(BaseAI):
         # find opponent
         opponent = grid.find(3 - self.player_num)
         
-        # find all available cells in the grid
+        # find all available cells surrounding Opponent
         available_cells = grid.get_neighbors(opponent, only_available=True)
 
         # throw to one of the available cells randomly
