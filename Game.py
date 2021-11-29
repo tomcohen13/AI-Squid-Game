@@ -14,7 +14,7 @@ from test_players.MediumAI import MediumAI
 PLAYER_TURN, COMPUTER_TURN = 1,2
 
 # Time Limit Before Losing
-timeLimit = 0.5
+timeLimit = 5.0
 allowance = 0.05
 
 class Game():
@@ -231,8 +231,8 @@ class Game():
 
 def main():
 
-    playerAI = None # change this to PlayerAI() to test your player!
-    computerAI = ComputerAI() # change this to a more sophisticated player you've coded
+    playerAI = HardAI() # change this to PlayerAI() to test your player!
+    computerAI = MediumAI() # change this to a more sophisticated player you've coded
     displayer = Displayer()
     game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
     
