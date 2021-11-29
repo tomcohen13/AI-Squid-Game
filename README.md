@@ -121,7 +121,7 @@ Minimax             |  ExpectiMinimax
 - The `getTrap` search tree maximizes expected utility over the Opponent's _Move_ actions, which are accurate. In English, you're asking yourself "where should I place this trap if Opponent moves like a pro?" See examle 2.1.1 below for an illustration of that tree.
 - The `getMove` search tree maximizes expected utility over Opponent's _Trap_ actions, which are subject to chance. In English, you're trying to foresee "where should I move, if the Opponent throws traps like a pro?" For the sake of simplicity, you may assume that the Opponent is _static_, that is, it throws traps from the same position even deeper in the tree. 
 
-So, expect to have two distinct search trees, two distinct (yet similar) ExpectiMinimax algorithms. This is why this is a group project!
+**So, expect to have two distinct search trees, two distinct (yet similar) ExpectiMinimax algorithms. This is why this is a group project!**
 
 #### 2.1.1 A concrete example
 
