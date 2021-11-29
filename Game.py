@@ -223,7 +223,6 @@ class Game():
             self.updateAlarm(time.process_time())
             turn = 3 - turn
             self.displayer.display(self.grid)
-            # self.grid.print_grid()
 
         return self.is_over(turn)
 
