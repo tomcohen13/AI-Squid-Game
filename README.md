@@ -170,7 +170,7 @@ Up to you!
 #### 2.3.1 Utility
 Say we have reached our maximum depth of 5. Since we can't go further, we must evaluate the utility of the current state as if it is a leaf node in the tree. Since we're allowed to be selfish (at last!), we seek to evaluate: "How good is this state for US?"
 
-To evaluate the utility of a state , we will need to come up with clever heuristic functions `utility(S : Grid)` that take in a state (the grid, the players, etc) and returns some numerical value that estimates the goodness of this state to _you_! 
+To evaluate the utility of a state , we will need to come up with clever a heuristic function `utility(S : Grid)` that takes in a state and returns some numerical value that estimates the goodness of this state for _you_! 
 
 **Note:** The better the heuristics, the better your player will be able to navigate the game. **Do not underestimate the power of a good heuristic function.**
 
@@ -207,16 +207,16 @@ DONE.
 2. To test your Player's performance, you should create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `opponent_[indicative description].py` file and place it in the folder `test_players`. Then, you'll be able to import that AI player (e.g., `from test_players.opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
 3. Limit both your search *breadth* (i.e., what is the scope of cells you're checking given Player's/Opponent's position) and depth to make sure you're covering as much as possible given the time constraint!!!
 4. Think of and treat the two search problems as distinct though with some interaction. Draw the search trees of the two problems to get a better understanding of the recursive flow of information in each. Pay attention to where the chance node comes into play *(hint: it is not every turn!)
-5. If things get too complicated, focus on the main part and ignore the rest. E.g., you do not _have_ to account for the probabilities of the trap landing in a neighboring cells, only the probability that it lands where you want it to. So, your tree search can be much simpler than the one in 2.1.1.
+5. If things get too complicated, focus on the main part and ignore the rest. E.g., you do not _have_ to account for the probabilities of the trap landing in a neighboring cells, only the probability that it lands where you want it to. So, your search tree can be much simpler than the one in 2.1.1.
 
 
 ## 3. Using the Skeleton Code
 The  skeleton  code  includes  the  following  files.   Note  that  you  will  only  be  working  in one of  them,  and  the  rest are read-only:
-- **Read-only-ish:** `Game.py`. This is the driver program that loads your Player AI and Computer AI and begins a game where they compete with each other. By default, it loads two dummy player, so please change it so that it loads `playerAI()` instead of the first computerAI player. See below on how to execute this program.
+- **Read-only-ish:** `Game.py`. This is the driver program that loads your Player AI and Computer AI and begins a game where they compete with each other. By default, it loads two dummy player, so please change it to load your `playerAI()` once implemented. Also, you may play with the time limit (we'll test you on a 5-second time limit). See below on how to execute this program.
 - **Read-only:** `Grid.py` This  module  defines  the  Grid  object,  along  with  some  useful  operations: move(),getAvailableCells(),and clone(), which you may use in your code.  These are by no means the most efficient methods available, so if you wish to strive for better performance, feel free to ignore these and write your own helper methods in a separate file.
 - **Read-only:** `BaseAI.py` This is the base class for any AI component.  All AIs inherit from this module, andimplement thegetMove()function, which takes a Grid object as parameter and returns a move (there aredifferent ”moves” for different AIs).
 - **Read-only:** `ComputerAI.py`.   This  inherits  from  `BaseAI`.  The `getMove()` function  returns a random computer action that is a tuple (x, y) indicating the location the computer decides to move to. Similarly, `getTrap()` function returns the *desired* position for the trap (recall where it lands is subject to chance).
-- **Writable:** `PlayerAI.py`.  You will code in this file.  The `PlayerAI` class should inherit from `BaseAI`. The `getMove()` function must return a tuple that indicates Player’s new location. This must be a valid move, given the traps on the board as well as the size of the board. Likewise, the `getTrap()` function is for you to implement and must return an (x,y) tuple of the *desired* position for the trap. This is also where your ExpectiMinimax will be executed.
+- **Writable:** `PlayerAI.py`.  You will code in this file.  The `PlayerAI` class should inherit from `BaseAI`. The `getMove()` function must return an (x,y) tuple that indicates Player’s new location. This must be a valid move, given the traps on the board, the players, and the size of the board. Likewise, the `getTrap()` function is for you to implement and must return an (x,y) tuple of the *desired* position for the trap. This is equivalent to the `decision` function in the Minimax pseudocode. So, expect it to call a `maximize` function.
 - **Read-only:** `BaseDisplayer.py` and `Displayer.py`. These print the grid. To test your code, execute the game manager like so:$ python3 GameManager.py
 
 To simulate a game, run `python3 Game.py`. Initially, the game is set so that two "dumb" computerAI player will play against each other. Change that by instantiating and using Player AI instead.
@@ -242,7 +242,7 @@ You are welcome to import libraries such as numpy, itertools, etc. (if you're un
 - **A group of 2:** We suggest dividing the Expectiminimax algorithms - one group member should code the Move Expectiminimax and its accompanying heuristics and the other should code the Throw expectiminimax and its heuristics. Additionally each member should code one Opponent player to play against.
 - **A groupd of 3:** We suggest one group member responsible for the Move Expectiminimax, another for the Throw Expectiminimax, and the third for both heuristics as well as coding AI Opponents to test the group's code against.
 
-## 6. Hints & Hacks (will get updated regularly)
+## 6. Hints, Hacks, Bug Fixes (will get updated regularly)
 
 - The Opponent's player number is always `3 - self.player_num` (useful when wishing to find the opponent on the board). Do not assume Opponnent will always be Player 2, because during the competition you might be!
 - To make a copy of the grid/state (will be *very* useful), use `grid.clone()`
@@ -253,3 +253,10 @@ import os
 # setting path to parent directory
 sys.path.append(os.getcwd())
 ```
+- There is a small bug in line ~191 of Game.py. It should be:
+```
+self.over = True
+print(f"Tried to put trap in {intended_trap}") ## change trap to intended_trap
+print("Invalid trap!")
+```
+- A super cool edge case: since we move before we trap, and You (Player) technically constitute a trap (since Opponent cannot move onto that cell), there is a possibility that you have trapped the opponent (and thus won) before `getTrap()` is even called, which means `getTrap()` might return `None` (depending on the scope of your search). You can address this edge case with a simple _if_ statement in `getTrap()`.
