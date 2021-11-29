@@ -206,8 +206,8 @@ DONE.
 1. You have five seconds to move _and_ throw a trap. Decide how much to allocate to each (you may want to test this!)
 2. To test your Player's performance, you should create more sophisticated Opponents. No need to be extra creative here - as you're coding and improving your Player, export your code into an `opponent_[indicative description].py` file and place it in the folder `test_players`. Then, you'll be able to import that AI player (e.g., `from test_players.opponent_minimax_no_pruning import PlayerAI as Opponent`) into `Game.py` and make it the opponent. That will help you prepare for other people's players!
 3. Limit both your search *breadth* (i.e., what is the scope of cells you're checking given Player's/Opponent's position) and depth to make sure you're covering as much as possible given the time constraint!!!
-4. Think of and treat the two search problems as distinct though with some interaction. Draw the search trees of the two problems to get a better understanding of the recursive flow of information in each. 
-5. If things get too complicated, focus on the main part and ignore the rest (e.g., you do not _have_ to account for the neighboring cells in the trap search tree)
+4. Think of and treat the two search problems as distinct though with some interaction. Draw the search trees of the two problems to get a better understanding of the recursive flow of information in each. Pay attention to where the chance node comes into play *(hint: it is not every turn!)
+5. If things get too complicated, focus on the main part and ignore the rest. E.g., you do not _have_ to account for the probabilities of the trap landing in a neighboring cells, only the probability that it lands where you want it to. So, your tree search can be much simpler than the one in 2.1.1.
 
 
 ## 3. Using the Skeleton Code
