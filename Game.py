@@ -231,8 +231,8 @@ class Game():
 
 def main():
 
-    playerAI = HardAI() # change this to PlayerAI() to test your player!
-    computerAI = MediumAI() # change this to a more sophisticated player you've coded
+    playerAI = None # change this to PlayerAI() to test your player!
+    computerAI = ComputerAI() # change this to a more sophisticated player you've coded
     displayer = Displayer()
     game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
     
