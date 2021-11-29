@@ -8,7 +8,7 @@ sys.path.append(os.getcwd())
 from BaseAI import BaseAI
 from Grid import Grid
 
-MAX_DEPTH = 3
+MAX_DEPTH = 4
 MOVE_TIME_LIMIT = 0.2
 TRAP_TIME_LIMIT = 0.2
 
@@ -218,14 +218,15 @@ class HardAI(BaseAI):
 
 
     def utility(self, state : Grid) -> float:
+
         # if win
         if not state.get_neighbors(state.find(3 - self.player_num), only_available=True):
-            return np.inf
+            return 1000
         # if lose
         if not state.get_neighbors(state.find(self.player_num), only_available=True):
-            return -np.inf
+            return -1000
         
-        return IS(state, player_num=self.player_num)
+        return IS(state, player_num = self.player_num)
         
 
 def IS(grid : Grid, player_num):
