@@ -4,6 +4,9 @@ from ComputerAI import ComputerAI
 from Displayer import Displayer
 from PlayerAI import PlayerAI
 from test_players.EasyAI import EasyAI
+from test_players.HardAI import HardAI
+from test_players.MediumAI import MediumAI
+from test_players.SuperAI import SuperAI
 from Utils import *
 import time
 
@@ -12,7 +15,7 @@ from test_players.MediumAI import MediumAI
 PLAYER_TURN, COMPUTER_TURN = 1,2
 
 # Time Limit Before Losing
-timeLimit = 5.0
+timeLimit = 1.0
 allowance = 0.05
 
 class Game():
@@ -228,8 +231,8 @@ class Game():
 
 def main():
 
-    playerAI = None # change this to PlayerAI() to test your player!
-    computerAI = EasyAI() # change this to a more sophisticated player you've coded
+    playerAI = SuperAI() # change this to PlayerAI() to test your player!
+    computerAI = HardAI() # change this to a more sophisticated player you've coded
     displayer = Displayer()
     game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
     

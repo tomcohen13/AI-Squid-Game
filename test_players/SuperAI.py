@@ -7,12 +7,13 @@ import os
 sys.path.append(os.getcwd())
 from BaseAI import BaseAI
 from Grid import Grid
+from Utils import manhattan_distance
 
 MAX_DEPTH = 3
 MOVE_TIME_LIMIT = 0.4
 TRAP_TIME_LIMIT = 0.4
 
-class HardAI(BaseAI):
+class SuperAI(BaseAI):
 
     def __init__(self, position = None) -> None:
         super().__init__()
@@ -98,11 +99,30 @@ class HardAI(BaseAI):
 
         return maxMove, maxUtility
 
+    def chance_move(self, state : Grid, p : float, alpha, beta, depth, start_time):
+        """
+        Description
+        -----------
+
+        # multiply incoming node by probability.
+        Parameters
+        ---------
+
+        Returns: 
+
+        """
+        
+        # 
+        
+        expected_utility = p * self.maximize_move(state, alpha, beta, depth + 1, start_time)[1]
+
+        return None, expected_utility
+
     def minimize_move(self, grid : Grid, alpha, beta, depth, start_time):
         """ 
         Description
         -----------
-        The Min node of the Minimax search tree of Move.
+        The Min node of the Minimax search tree of Move, which simulates Opponent's throw actions. 
         
         The function minimizes utility over the player's future moves by finding ideal position to place a trap.
         
@@ -133,10 +153,14 @@ class HardAI(BaseAI):
         actions = grid.get_neighbors(grid.find(self.player_num), only_available=True)
         
         states = [grid.clone().trap(pos = a) for a in actions]
+        
+        opponent_pos = grid.find(3 - self.player_num)
 
-        for (action, state) in zip(actions, states):
+        probabilities = [compute_p(opponent_pos, a) for a in actions]
 
-            _, utility = self.maximize_move(state, alpha, beta, depth + 1, start_time)
+        for (action, state, p) in zip(actions, states, probabilities):
+
+            _, utility = self.chance_move(state, p, alpha, beta, depth, start_time)
 
             if utility < minUtility:
                 minChild, minUtility = action, utility
@@ -168,6 +192,7 @@ class HardAI(BaseAI):
         start = time.process_time()
         return self.maximize_trap(grid, -np.inf, np.inf, depth = 0, start_time = start)
 
+
     def maximize_trap(self, grid : Grid, alpha, beta, depth, start_time):
 
         if self.terminal_test(grid, time.process_time() - start_time, depth, mode = 'trap'):
@@ -176,14 +201,17 @@ class HardAI(BaseAI):
         maxUtility = -np.inf
         
         # only consider immediate neighbors of Opponent
-        positions = grid.get_neighbors(grid.find(3 - self.player_num), only_available = True)
+        actions = grid.get_neighbors(grid.find(3 - self.player_num), only_available = True)
         
         # create states corresponding to each action
-        states = [grid.clone().trap(position) for position in positions]
+        states = [grid.clone().trap(target) for target in actions]
 
-        for (action, state) in zip(positions, states):
+        probabilities = [compute_p(self.pos, target) for target in actions]
 
-            _, utility = self.minimize_trap(state, alpha, beta, depth + 1, start_time)
+        for (action, state, p) in zip(actions, states, probabilities):
+
+            # _, utility = self.minimize_trap(state, alpha, beta, depth + 1, start_time)
+            _, utility = self.chance_trap(state, p, alpha, beta, depth, start_time)
 
             if utility > maxUtility:
                 maxTrap, maxUtility = action, utility
@@ -195,6 +223,10 @@ class HardAI(BaseAI):
 
         return maxTrap, maxUtility
         
+    def chance_trap(self, state : Grid, p, alpha, beta, depth, start_time):
+        expected_utility = p * self.minimize_move(state, alpha, beta, depth + 1, start_time)[1]
+        return None, expected_utility
+
     def minimize_trap(self, grid : Grid, alpha, beta, depth, start_time):
         
         if self.terminal_test(grid, time.process_time() - start_time, depth, mode = 'trap'):
@@ -243,4 +275,11 @@ def IS(grid : Grid, player_num):
     # find all available moves by Opponent
     opp_moves       = grid.get_neighbors(grid.find(3 - player_num), only_available = True)
     
-    return len(player_moves) - len(opp_moves)      
+    return len(player_moves) - 2 * len(opp_moves)      
+
+def OSL(grid : Grid, player_num):
+    pass
+
+def compute_p(position, target):
+    p = 1 - 0.05*(manhattan_distance(position, target) - 1)
+    return p
