@@ -9,8 +9,8 @@ from BaseAI import BaseAI
 from Grid import Grid
 
 MAX_DEPTH = 3
-MOVE_TIME_LIMIT = 0.4
-TRAP_TIME_LIMIT = 0.4
+MOVE_TIME_LIMIT = 1.0
+TRAP_TIME_LIMIT = 1.0
 
 class HardAI(BaseAI):
 
@@ -40,9 +40,9 @@ class HardAI(BaseAI):
 
         start = time.process_time()
 
-        # Funny edge case: check if player has won by trapping Opponent with previous move.
+        # Funny edge case: check if player has won by trapping Opponent with previous move. Throwing randomly.
         if len(grid.get_neighbors(grid.find(3 - self.player_num), only_available=True)) == 0:
-            return grid.getAvailableCells()[0]
+            return grid.getAvailableCells()[0], None
         
         return self.maximize_move(grid, alpha = -np.inf, beta = np.inf, depth = 0, start_time = start)
 
