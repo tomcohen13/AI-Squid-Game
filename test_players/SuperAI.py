@@ -10,8 +10,8 @@ from Grid import Grid
 from Utils import manhattan_distance
 
 MAX_DEPTH = 3
-MOVE_TIME_LIMIT = 0.4
-TRAP_TIME_LIMIT = 0.4
+MOVE_TIME_LIMIT = 0.49
+TRAP_TIME_LIMIT = 0.49
 
 class SuperAI(BaseAI):
 
@@ -43,7 +43,7 @@ class SuperAI(BaseAI):
 
         # Funny edge case: check if player has won by trapping Opponent with previous move.
         if len(grid.get_neighbors(grid.find(3 - self.player_num), only_available=True)) == 0:
-            return grid.getAvailableCells()[0]
+            return grid.getAvailableCells()[0], 1000
         
         return self.maximize_move(grid, alpha = -np.inf, beta = np.inf, depth = 0, start_time = start)
 
@@ -82,8 +82,9 @@ class SuperAI(BaseAI):
         states = [grid.clone().move(mv, self.player_num) for mv in available_moves]
        
         ## add sorting of moves and states?
-
-        for (move, state) in zip(available_moves, states):
+        children = list(zip(available_moves, states))
+        children.sort(key = lambda x: OSL(x[1], self.player_num))
+        for (move, state) in children:
 
             _, utility = self.minimize_move(state, alpha, beta, depth + 1, start_time)
 
@@ -157,6 +158,7 @@ class SuperAI(BaseAI):
         opponent_pos = grid.find(3 - self.player_num)
 
         probabilities = [compute_p(opponent_pos, a) for a in actions]
+        # probably sort moves based on heuristic
 
         for (action, state, p) in zip(actions, states, probabilities):
 
@@ -190,6 +192,8 @@ class SuperAI(BaseAI):
 
     def _best_trap(self, grid: Grid):
         start = time.process_time()
+        if len(grid.get_neighbors(grid.find(3 - self.player_num), only_available=True)) == 0:
+            return grid.getAvailableCells()[0], 100
         return self.maximize_trap(grid, -np.inf, np.inf, depth = 0, start_time = start)
 
 
@@ -259,15 +263,36 @@ class SuperAI(BaseAI):
 
         # if win
         if not state.get_neighbors(state.find(3 - self.player_num), only_available=True):
-            return 1000
+            return 100
         # if lose
         if not state.get_neighbors(state.find(self.player_num), only_available=True):
-            return -1000
+            return -100
         
-        return IS(state, player_num = self.player_num)
-        
+        # return 0.7 * AIS(state, player_num = self.player_num) + 0.5 * OSL(state, player_num = self.player_num)
+        # return M2B(state, self.player_num) + AIS(state, self.player_num) #+ 0.25 * OSL(state, self.player_num) 
+        return OTD(state, player_num=self.player_num)
 
-def IS(grid : Grid, player_num):
+
+def M2B(state : Grid, player_num : int) -> float:
+    """
+    Moves to Board
+    """
+    p = len(state.get_neighbors(state.find(player_num), only_available=True))
+    o = len(state.get_neighbors(state.find(3 - player_num), only_available=True))
+    m = len(state.getAvailableCells())
+    n = state.getMap().shape[0]
+
+    return 2 * p * m / n - o
+
+def OTD(state : Grid, player_num) -> float:
+    N = state.getMap().shape[0] 
+    m = len(state.getAvailableCells()) / N ** 2 
+    p = len(state.get_neighbors(state.find(player_num), only_available = True)) # player moves
+    o = len(state.get_neighbors(state.find(3 - player_num), only_available = True))
+    return 2*p - o if m > 0.5 else p - 2*o
+
+
+def AIS(grid : Grid, player_num):
 
     # find all available moves by Player
     player_moves    = grid.get_neighbors(grid.find(player_num), only_available = True)
@@ -275,10 +300,29 @@ def IS(grid : Grid, player_num):
     # find all available moves by Opponent
     opp_moves       = grid.get_neighbors(grid.find(3 - player_num), only_available = True)
     
-    return len(player_moves) - 2 * len(opp_moves)      
+    return 2 * len(player_moves) - len(opp_moves)
 
-def OSL(grid : Grid, player_num):
-    pass
+def OSL(state : Grid, player_num) -> float:
+    """
+    One-Step-Lookahead heuristics
+
+    Description
+    ----------
+    function computes the sum of the num of available moves one step ahead.
+
+    Parameters:
+    - state (Grid) : a game state, containing board, players, traps.
+
+    - player_num : player number
+
+
+    """
+    available_moves = state.get_neighbors(state.find(player_num))
+
+    child_states = [state.clone().move(pos, player_num) for pos in available_moves]
+
+    return sum([len(s.get_neighbors(pos, only_available = True)) for pos, s in zip(available_moves, child_states)])
+
 
 def compute_p(position, target):
     p = 1 - 0.05*(manhattan_distance(position, target) - 1)

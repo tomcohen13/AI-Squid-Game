@@ -222,10 +222,11 @@ class Game():
 
             if self.is_over(turn):
                 self.over = True
-            
-            self.updateAlarm(time.process_time())
+            endtime = time.process_time()
+            # self.updateAlarm(time.process_time())
             turn = 3 - turn
             self.displayer.display(self.grid)
+            self.updateAlarm(endtime)
 
         return self.is_over(turn)
 
@@ -240,7 +241,7 @@ def main():
     if result == 1: 
         print("Player 1 wins!")
     elif result == 2:
-        print("Player 1 loses!")
+        print("Player 2 wins!")
 
 if __name__ == "__main__":
     main()
