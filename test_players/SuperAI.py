@@ -10,8 +10,8 @@ from Grid import Grid
 from Utils import manhattan_distance
 
 MAX_DEPTH = 3
-MOVE_TIME_LIMIT = 0.49
-TRAP_TIME_LIMIT = 0.49
+MOVE_TIME_LIMIT = 0.99
+TRAP_TIME_LIMIT = 0.99
 
 class SuperAI(BaseAI):
 

@@ -8,7 +8,7 @@ sys.path.append(os.getcwd())
 from BaseAI import BaseAI
 from Grid import Grid
 
-MAX_DEPTH = 3
+MAX_DEPTH = 2
 MOVE_TIME_LIMIT = 0.49
 TRAP_TIME_LIMIT = 0.49
 

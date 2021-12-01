@@ -15,7 +15,7 @@ from test_players.MediumAI import MediumAI
 PLAYER_TURN, COMPUTER_TURN = 1,2
 
 # Time Limit Before Losing
-timeLimit = 1.0
+timeLimit = 2.0
 allowance = 0.05
 
 class Game():
