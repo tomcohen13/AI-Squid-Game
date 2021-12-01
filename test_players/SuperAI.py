@@ -12,6 +12,7 @@ from Utils import manhattan_distance
 MAX_DEPTH = 3
 MOVE_TIME_LIMIT = 0.99
 TRAP_TIME_LIMIT = 0.99
+N = 7
 
 class SuperAI(BaseAI):
 
@@ -74,7 +75,7 @@ class SuperAI(BaseAI):
         """
         if self.terminal_test(grid, time = time.process_time() - start_time, depth = depth, mode = 'move'):
             return None, self.utility(grid)
-        
+
         maxMove, maxUtility = None, -np.inf
         
         available_moves = grid.get_neighbors(grid.find(self.player_num), only_available = True)
@@ -206,7 +207,13 @@ class SuperAI(BaseAI):
         
         # only consider immediate neighbors of Opponent
         actions = grid.get_neighbors(grid.find(3 - self.player_num), only_available = True)
-        
+
+        if 3 < len(actions) < 8:
+            second_neighbors = [grid.get_neighbors(a, only_available=True) for a in actions]
+
+            actions.extend([second_neighbor for item in second_neighbors for second_neighbor in item])
+            actions = actions[:8]
+
         # create states corresponding to each action
         states = [grid.clone().trap(target) for target in actions]
 
@@ -271,6 +278,29 @@ class SuperAI(BaseAI):
         # return 0.7 * AIS(state, player_num = self.player_num) + 0.5 * OSL(state, player_num = self.player_num)
         # return M2B(state, self.player_num) + AIS(state, self.player_num) #+ 0.25 * OSL(state, self.player_num) 
         return OTD(state, player_num=self.player_num)
+        # return self.OTD2(state)
+
+    def cells_in_vicinity(self, grid : Grid, perimeter = 2, only_available = False):
+        
+        x,y = self.pos
+
+        valid_range = lambda t: range(max(t-perimeter, 0), min(t+perimeter+1, N))
+
+        neighborhood = list({(a,b) for a in valid_range(x) for b in valid_range(y)} - {(x,y)})
+
+        if only_available:
+            return [cell for cell in neighborhood if grid.getCellValue(cell) == 0]
+        
+        else:
+            return neighborhood
+
+    def OTD2(self, state : Grid, perimeter = 2):
+        
+        m = len(self.cells_in_vicinity(state, perimeter, only_available=True)) / (perimeter * 2 + 1) ** 2 
+        p = len(state.get_neighbors(state.find(self.player_num), only_available = True)) # player moves
+        o = len(state.get_neighbors(state.find(3 - self.player_num), only_available = True))
+        return 2*p - o if m > 0.5 else p - 2*o
+        
 
 
 def M2B(state : Grid, player_num : int) -> float:
@@ -284,12 +314,23 @@ def M2B(state : Grid, player_num : int) -> float:
 
     return 2 * p * m / n - o
 
+
+
 def OTD(state : Grid, player_num) -> float:
-    N = state.getMap().shape[0] 
+    """
+    Description
+    ----------
+    Switch from Offensive to Defensive halfway through the game.
+    Utilizes the proportion of available cells in the grid to the size of the grid.
+    More delicate to maximize opponents 
+    Formula : H(S,player) = available_cells/size_of_board *
+    
+    """
     m = len(state.getAvailableCells()) / N ** 2 
     p = len(state.get_neighbors(state.find(player_num), only_available = True)) # player moves
     o = len(state.get_neighbors(state.find(3 - player_num), only_available = True))
     return 2*p - o if m > 0.5 else p - 2*o
+
 
 
 def AIS(grid : Grid, player_num):
