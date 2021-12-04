@@ -35,7 +35,7 @@ class MediumAI(BaseAI):
 
         states = [grid.clone().move(mv, self.player_num) for mv in available_moves]
 
-        # find move with best IS score
+        # find move with best AM score
         am_scores = np.array([AM(state, self.player_num) for state in states])
 
         new_pos = available_moves[np.argmax(am_scores)]
@@ -44,48 +44,33 @@ class MediumAI(BaseAI):
 
     def getTrap(self, grid : Grid):
 
-        """EasyAI throws randomly to the immediate neighbors of the opponent"""
+        """MediumAI throws trap to the position that minimizes AM score of Opponent's immediate neigghbors"""
         
-        # find players
+        # find opponent
         opponent = grid.find(3 - self.player_num)
 
-        # find all available cells in the grid
+        # find all available cells around opponent
         available_cells = grid.get_neighbors(opponent, only_available = True)
 
-        # edge case - if there are no available cell around opponent, then 
-        # player constitutes last trap and will win. throwing randomly.
+        # edge case - if there are no available cell around opponent, 
+        # player constitutes last trap and wins. Throwing randomly.
         if not available_cells:
             return random.choice(grid.getAvailableCells())
-            
+        
+        # make child states
         states = [grid.clone().trap(cell) for cell in available_cells]
 
-        # find trap that minimizes opponent's moves
+        # find AM scores of child states
         am_scores = np.array([AM(state, 3 - self.player_num) for state in states])
 
-        # throw to one of the available cells randomly
+        # throw to the cell that minimizes that
         trap = available_cells[np.argmin(am_scores)] 
     
         return trap
-
-    def find_opponent(self, grid : Grid) -> tuple:
-        options = np.argwhere(grid.getMap() > 0)
-        for i,j in options:
-            if (i,j) != self.getPosition():
-                return (i,j)
 
 def AM(grid : Grid, player_num):
 
     available_moves = grid.get_neighbors(grid.find(player_num), only_available = True)
 
     return len(available_moves)
-
-def IS(grid : Grid, player_num):
-
-    # find all available moves by Player
-    player_moves    = grid.get_neighbors(grid.find(player_num), only_available = True)
-    
-    # find all available moves by Opponent
-    opp_moves       = grid.get_neighbors(grid.find(3 - player_num), only_available = True)
-    
-    return len(player_moves) - len(opp_moves)
 
