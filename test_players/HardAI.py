@@ -172,7 +172,30 @@ class HardAI(BaseAI):
         return self.maximize_trap(grid, -np.inf, np.inf, depth = 0, start_time = start)
 
     def maximize_trap(self, grid : Grid, alpha, beta, depth, start_time):
+        """ 
+        Description
+        -----------
+        The Max node of the Minimax search tree of Trap.
+        The function maximizes utility over Opponent's Move actions.
+        Uses Alpha-Beta Pruning to skip unpromising branches of the tree.
 
+        Parameters
+        ----------
+        grid (Grid) : a state of the game described by a Grid object.
+
+        alpha : Maximizer's lower bound on utility
+
+        beta : Minimizer's upper bound on utility
+
+        depth : current depth of the state in the search tree
+
+        start_time : a timestamp of when the turn has started to make sure move does not exceed it.
+
+        Returns
+        -------
+        The action corresponding to the maximum utility Trap, given an intelligent opponent.
+
+        """
         if self.terminal_test(grid, time.process_time() - start_time, depth, mode = 'trap'):
             return None, self.utility(grid)
         
@@ -199,7 +222,30 @@ class HardAI(BaseAI):
         return maxTrap, maxUtility
         
     def minimize_trap(self, grid : Grid, alpha, beta, depth, start_time):
-        
+        """ 
+        Description
+        -----------
+        The Min node of the Minimax search tree of Trap.
+        Finds best Move action by opponent, in response to a trap thrown by player.
+        Uses Alpha-Beta Pruning to skip unpromising branches of the tree.
+
+        Parameters
+        ----------
+        grid (Grid) : a state of the game described by a Grid object.
+
+        alpha : Maximizer's lower bound on utility
+
+        beta : Minimizer's upper bound on utility
+
+        depth : current depth of the state in the search tree
+
+        start_time : a timestamp of when the turn has started to make sure move does not exceed it.
+
+        Returns
+        -------
+        The action corresponding to the maximum utility move, given an intelligent opponent.
+
+        """
         if self.terminal_test(grid, time.process_time() - start_time, depth, mode = 'trap'):
             return None, self.utility(grid)
 
