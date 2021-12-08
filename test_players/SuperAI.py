@@ -9,9 +9,9 @@ from BaseAI import BaseAI
 from Grid import Grid
 from Utils import manhattan_distance
 
-MAX_DEPTH = 3
-MOVE_TIME_LIMIT = 0.99
-TRAP_TIME_LIMIT = 0.99
+MAX_DEPTH = 4
+MOVE_TIME_LIMIT = 0.98
+TRAP_TIME_LIMIT = 0.98
 N = 7
 
 class SuperAI(BaseAI):
@@ -270,14 +270,14 @@ class SuperAI(BaseAI):
 
         # if win
         if not state.get_neighbors(state.find(3 - self.player_num), only_available=True):
-            return 100
+            return 1001
         # if lose
         if not state.get_neighbors(state.find(self.player_num), only_available=True):
-            return -100
+            return -1001
         
         # return 0.7 * AIS(state, player_num = self.player_num) + 0.5 * OSL(state, player_num = self.player_num)
         # return M2B(state, self.player_num) + AIS(state, self.player_num) #+ 0.25 * OSL(state, self.player_num) 
-        return OTD(state, player_num=self.player_num)
+        return OTD(state, self.player_num)
         # return self.OTD2(state)
 
     def cells_in_vicinity(self, grid : Grid, perimeter = 2, only_available = False):
@@ -301,7 +301,15 @@ class SuperAI(BaseAI):
         o = len(state.get_neighbors(state.find(3 - self.player_num), only_available = True))
         return 2*p - o if m > 0.5 else p - 2*o
         
+def IS(grid : Grid, player_num):
 
+    # find all available moves by Player
+    player_moves    = grid.get_neighbors(grid.find(player_num), only_available = True)
+    
+    # find all available moves by Opponent
+    opp_moves       = grid.get_neighbors(grid.find(3 - player_num), only_available = True)
+    
+    return len(player_moves) - len(opp_moves)
 
 def M2B(state : Grid, player_num : int) -> float:
     """
@@ -329,7 +337,7 @@ def OTD(state : Grid, player_num) -> float:
     m = len(state.getAvailableCells()) / N ** 2 
     p = len(state.get_neighbors(state.find(player_num), only_available = True)) # player moves
     o = len(state.get_neighbors(state.find(3 - player_num), only_available = True))
-    return 2*p - o if m > 0.5 else p - 2*o
+    return 1.5*p - o if m > 0.5 else p - 2*o
 
 
 

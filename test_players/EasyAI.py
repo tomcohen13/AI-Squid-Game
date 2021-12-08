@@ -40,7 +40,10 @@ class EasyAI(BaseAI):
     def getTrap(self, grid : Grid):
 
         """EasyAI throws randomly to the immediate neighbors of the opponent"""
-        
+        # edge case: if player wins by moving before trap is thrown, throw randomly
+        if len(grid.get_neighbors(grid.find(3 - self.player_num), only_available=True)) == 0:
+            return grid.getAvailableCells()[0], 100
+            
         # find opponent
         opponent = grid.find(3 - self.player_num)
         
