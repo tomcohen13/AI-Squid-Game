@@ -37,8 +37,10 @@ class Grid():
         """Find a player given the player's number."""
         
         assert(player_num in [1,2])
-        
-        result = tuple(np.argwhere(self.map == player_num)[0])
+        try:
+            result = tuple(np.argwhere(self.map == player_num)[0])
+        except:
+            print(self.map)
 
         return result
 
