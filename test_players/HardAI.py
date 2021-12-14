@@ -107,27 +107,18 @@ class HardAI(BaseAI):
         """
         Description
         -----------
+        Degenerate chance node of getMove function.
+        Only passes on the intended trap without considering expected utility of neighboring cells.
 
-        # multiply incoming node by probability.
         Parameters
         ---------
+        regular ones; see above functions
 
-        Returns: 
-
+        Returns: a tuple (_, Utility) with the expected utility of the following nodes.
         """
-        # if p > 0.85:
+
         expected_utility = p * self.maximize_move(state, alpha, beta, depth + 1, start_time)[1]
-        """
-        else:
-            neighbors = [neighbor for neighbor in state.get_neighbors(action) if state.getCellValue(neighbor) <= 0]
 
-            neighbors_states = [state.clone().trap(n) for n in neighbors]
-            
-            expected_utility = p * self.maximize_move(state, alpha, beta, depth + 1, start_time)[1]\
-                                + (1-p)/len(neighbors)\
-                                * 0.5 * sum([AM(neighbor, self.player_num) for neighbor in neighbors_states])
-            
-        """
         return None, expected_utility
 
     def minimize_move(self, grid : Grid, alpha, beta, depth, start_time):
