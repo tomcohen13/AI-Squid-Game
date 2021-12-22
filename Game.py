@@ -9,13 +9,11 @@ from test_players.HardAI import HardAI
 from Utils import *
 import time
 
-from test_players.MediumAI import MediumAI
-
 PLAYER_TURN, COMPUTER_TURN = 1,2
 
 # Time Limit Before Losing
-timeLimit = 1.0
-allowance = 0.05
+timeLimit = 5.0
+allowance = 1.0
 
 class Game():
     def __init__(self, playerAI = None, computerAI = None, N = 7, displayer = None):
@@ -65,7 +63,6 @@ class Game():
             return False
 
     def is_valid_move(self, grid : Grid, player, move : tuple):
-
         '''Validate move - cell has to be available and immediate neighbor'''
         
         if grid.getCellValue(move) == 0 and move in grid.get_neighbors(player.getPosition()):
@@ -130,15 +127,14 @@ class Game():
             self.over = True
             print("Went over time. Doll Shot!")
         else:
-            while time.process_time() - self.prevTime < timeLimit + allowance:
-                pass
+            # while time.process_time() - self.prevTime < timeLimit + allowance:
+            #    pass
 
             self.prevTime = time.process_time()
 
     def play(self):
         """ DO NOT MODIFY """
 
-        print("AI SQUID GAME")
         self.initialize_game()
 
         self.displayer.display(self.grid)
@@ -181,7 +177,6 @@ class Game():
                     print(f"Throwing a trap to: {intended_trap}. Trap landed in {trap}")
                     won = self.is_over(turn)
                     if won:
-                        self.is_over = True
                         self.displayer.display(self.grid)
                         return won
 
@@ -237,8 +232,8 @@ class Game():
 
 def main():
 
-    playerAI = EasyAI() # change this to PlayerAI() to test your player!
-    computerAI = HardAI() # change this to a more sophisticated player you've codeds
+    playerAI = HardAI() # change this to PlayerAI() to test your player!
+    computerAI = EasyAI() # change this to a more sophisticated player you've codeds
     displayer = Displayer()
     game = Game(playerAI = playerAI, computerAI = computerAI, N = 7, displayer=displayer)
     
